@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BID OS
 
-## Getting Started
+**업무 보조도구**
 
-First, run the development server:
+# 화면 설계서
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 메모 생성기
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+┌─────────────────────────────┐
+│ 공고 기본 메모 생성기 │
+└─────────────────────────────┘
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[발주처]
+(지자체) (조달청) (국방부) (수의)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+[방식]
+(총액) (적격) (수의)
 
-## Learn More
+[현설]
+(현설O) (현설X)
 
-To learn more about Next.js, take a look at the following resources:
+[보증금]
+(보증금O) (보증금X)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[확인항목]
+[✓] 기초
+[✓] A값
+[✓] 순공사
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+[주력분야]
+[ 입력 ]
 
-## Deploy on Vercel
+[메모 생성 버튼]
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+──────────────────────────────
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+생성된 메모
+[복사 버튼]
+
+──────────────────────────────
+
+🔎 메모 검색
+
+최근 사용 메모
+
+──────────────────────────────
+
+[@ 메모] [무자격]
+
+(탭 내용 영역)
+
+- 스크롤을 줄이기 위해 탭 기반 분류
+- 각 탭마다 실시간 검색 기능도 있으면 좋을듯?
+
+## 개념 사전(메인 화면)
+
+┌──────────────────────────────────────┐
+│ 🔍 [ 무엇을 찾을까요? ] │
+│ (자동 포커스, 바로 입력 가능) │
+└──────────────────────────────────────┘
+
+🔥 자주 찾는 개념
+[ 단가계약 ]
+[ 적격심사 ]
+[ 수의계약 ]
+[ 지명경쟁 ]
+[ SMPP ]
+
+──────────────────────────────────────
+
+### 검색 결과 화면
+
+예를 들어 '단가' 입력
+
+[개념] 단가계약
+요약: 단가를 기준으로 계약하고 실제 수량은 추후 정산
+
+[메모] 단가계약 주의사항
+요약: 총액계약과 구분 설명 필수
+
+[공고] R25BK010XXXX
+요약: 단가계약 방식 적용
+
+### 상세 화면
+
+제목: 단가계약
+
+한줄 정의:
+단가를 기준으로 계약하고, 실제 물량에 따라 정산하는 계약 방식
+
+──────────────────────────
+
+📌 통화용 설명 스크립트:
+"단가계약은 총액이 아니라 항목별 단가만 정해두고,
+실제 수량이 확정된 이후에 정산하는 방식입니다."
+
+──────────────────────────
+
+📌 핵심 포인트:
+
+- 총액계약과 구분 필요
+- 물량 변동 가능성 있는 경우 사용
+- 입찰 시 단가 기준 투찰
+
+──────────────────────────
+
+📎 관련 태그: #계약방식 #총액계약비교 #기초개념
