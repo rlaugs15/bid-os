@@ -8,7 +8,7 @@ import { TemplateResult } from "./TemplateResult";
 export default function TemplateBuilder() {
   const { template, setTemplate, memo, setMemo, copied, copy, result } = useTemplate();
   return (
-    <div className="p-10">
+    <div>
       <TemplateOptions template={template} setTemplate={setTemplate} />
 
       <div className="my-4">

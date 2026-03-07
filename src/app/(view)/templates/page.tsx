@@ -1,3 +1,4 @@
+import MemoTabs from "@/components/features/templates/MemoTabs/MemoTabs";
 import TemplateBuilder from "@/components/features/templates/TemplateBuilder/TemplateBuilder";
 import { Metadata } from "next";
 
@@ -7,8 +8,9 @@ export const metadata: Metadata = {
 
 export default function TemplatesPage() {
   return (
-    <main>
+    <main className="p-10 space-y-10">
       <TemplateBuilder />
+      <MemoTabs />
     </main>
   );
 }
