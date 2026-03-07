@@ -7,15 +7,18 @@ interface ViewLayoutProps extends StrictPropsWithChildren {
   modal: React.ReactNode;
 }
 
-export default function ViewLayout({ modal, children }: ViewLayoutProps) {
+export default async function ViewLayout({ modal, children }: ViewLayoutProps) {
   return (
     <div className="w-full flex flex-col min-w-360">
       {modal}
       <Header />
       <SidebarProvider>
+        <AppSidebar className="mt-15" />
         <SidebarInset>
-          <AppSidebar className="mt-15" />
-          <div className="grow pt-15">{children}</div>
+          <div className="grow pt-15">
+            <h1 className="text-red-300">{}</h1>
+            {children}
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </div>

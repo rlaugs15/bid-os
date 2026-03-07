@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BID OS",
-  description: "전자입찰 서포트",
+  title: {
+    template: "%s | BID OS",
+    default: "BID OS",
+  },
+  description: "김현준의 업무도구",
 };
 
 export default function RootLayout({

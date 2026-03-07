@@ -22,30 +22,22 @@ import { usePathname } from "next/navigation";
 const data = {
   navMain: [
     {
-      title: "📚 개념 사전",
+      title: "📚 인덱스",
       url: "#",
     },
     {
       title: "📋 메모 템플릿",
       url: "/templates",
-      items: [
-        {
-          title: "공고 기본",
-          url: "/templates/bid",
-        },
-        {
-          title: "@ 메모",
-          url: "/templates/whelk",
-        },
-        {
-          title: "무자격 처리",
-          url: "/templates/unqualified",
-        },
-      ],
     },
     {
       title: "🏢 업체 관리",
       url: "#",
+      items: [
+        {
+          title: "미구현",
+          url: "#",
+        },
+      ],
     },
     {
       title: "🗓 업무 기록",
@@ -80,7 +72,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu className="text-text-2xl">
+          <SidebarMenu>
             {data.navMain.map((item) => {
               const isActive =
                 pathname === item.url || item.items?.some((sub) => pathname === sub.url);
@@ -96,7 +88,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuSub>
                       {item.items.map((item) => (
                         <SidebarMenuSubItem key={item.title}>
-                          <SidebarMenuSubButton asChild isActive={pathname === item.url}>
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={pathname === item.url}
+                            className="font-light"
+                          >
                             <Link href={item.url}>{item.title}</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
