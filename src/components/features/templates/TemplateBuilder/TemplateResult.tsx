@@ -19,7 +19,7 @@ export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
           readOnly
           rows={2}
         />
-        <Button size="sm" className="w-30" onClick={copy}>
+        <Button variant={copied ? "outline" : "default"} size="sm" className="w-30" onClick={copy}>
           {copied ? "복사됨" : "복사"}
         </Button>
       </div>
