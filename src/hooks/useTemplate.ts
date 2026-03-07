@@ -11,6 +11,7 @@ export default function useTemplate() {
 
   const reset = () => {
     setTemplate(initialTemplate);
+    setCopied(false);
     setMemo("");
   };
 
