@@ -30,3 +30,27 @@ export const UserIcon = ({ className }: IconProps) => {
     />
   );
 };
+
+export const UserBlackIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/user-black.svg"
+      width={20}
+      height={20}
+      alt="유저 아이콘"
+      className={cn("w-5 h-5", className)}
+    />
+  );
+};
+
+export const LogoutIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/log-out.svg"
+      width={14}
+      height={15}
+      alt="헤드폰 아이콘"
+      className={cn("w-5 h-5", className)}
+    />
+  );
+};
