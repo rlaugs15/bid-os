@@ -134,18 +134,30 @@ export function TemplateOptions({ template, setTemplate }: Props) {
           종합
         </Button>
       </OptionGroup>
-
       <OptionGroup label="주력분야">
-        <Input
-          className="w-60 text-text-xl!"
-          value={template.field ?? ""}
-          onChange={(e) =>
-            setTemplate((prev) => ({
-              ...prev,
-              field: e.target.value,
-            }))
-          }
-        />
+        <div className="flex items-center gap-4">
+          <Input
+            className="w-60 text-text-xl!"
+            value={template.field === "x" ? "" : (template.field ?? "")}
+            onChange={(e) =>
+              setTemplate((prev) => ({
+                ...prev,
+                field: e.target.value,
+              }))
+            }
+          />
+          <Button
+            variant={template.field === "x" ? "default" : "outline"}
+            onClick={() =>
+              setTemplate((prev) => ({
+                ...prev,
+                field: prev.field === "x" ? undefined : "x",
+              }))
+            }
+          >
+            주력 X
+          </Button>
+        </div>
       </OptionGroup>
       <OptionGroup label="공사현장">
         <Input
