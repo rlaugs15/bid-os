@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { cacheTag } from "next/cache";
+import { cacheTag, revalidateTag } from "next/cache";
 import prisma from "prisma/prisma";
 import { globalTags } from "../cache/global.cache";
 import { userTags } from "../cache/user.cache";
@@ -54,4 +54,19 @@ export async function getUser() {
   if (!userId) return null;
 
   return getCachedUser(userId);
+}
+
+// ===================================================================
+// 로그아웃
+// ===================================================================
+export async function logout() {
+  const supabase = await createClient();
+
+  try {
+    await supabase.auth.signOut();
+    // 서버 캐시 무효화
+    revalidateTag(userTags.me(), "none"); // use cache로 캐싱된 사용자 상태 즉시 갱신
+  } catch (error) {
+    console.error("로그아웃 실패:", error);
+  }
 }
