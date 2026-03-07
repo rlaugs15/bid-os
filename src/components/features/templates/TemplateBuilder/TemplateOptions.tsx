@@ -68,6 +68,52 @@ export function TemplateOptions({ template, setTemplate }: Props) {
           }
         />
       </OptionGroup>
+      <OptionGroup label="금액확인">
+        <Button
+          variant={template.amountCheck?.base ? "default" : "outline"}
+          onClick={() =>
+            setTemplate((prev) => ({
+              ...prev,
+              amountCheck: {
+                ...prev.amountCheck,
+                base: !prev.amountCheck?.base,
+              },
+            }))
+          }
+        >
+          기초금액
+        </Button>
+
+        <Button
+          variant={template.amountCheck?.aValue ? "default" : "outline"}
+          onClick={() =>
+            setTemplate((prev) => ({
+              ...prev,
+              amountCheck: {
+                ...prev.amountCheck,
+                aValue: !prev.amountCheck?.aValue,
+              },
+            }))
+          }
+        >
+          A값
+        </Button>
+
+        <Button
+          variant={template.amountCheck?.net ? "default" : "outline"}
+          onClick={() =>
+            setTemplate((prev) => ({
+              ...prev,
+              amountCheck: {
+                ...prev.amountCheck,
+                net: !prev.amountCheck?.net,
+              },
+            }))
+          }
+        >
+          순공사
+        </Button>
+      </OptionGroup>
       <OptionGroup label="현장설명">
         <Button
           variant={template.briefing === "o" ? "default" : "outline"}

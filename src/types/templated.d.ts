@@ -6,4 +6,10 @@ export type TemplateState = {
   type?: string;
   field?: string;
   site?: string;
+
+  amountCheck?: {
+    base?: boolean;
+    aValue?: boolean;
+    net?: boolean;
+  };
 };
