@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Suspense } from "react";
+import UserMenu from "./UserMenu";
 
 export default function Header() {
   return (
@@ -7,13 +8,9 @@ export default function Header() {
       <Link href="/" className="text-white text-[23px] font-bold">
         BID OS
       </Link>
-      <section>
-        <Link href="/login">
-          <Button variant={"ghost"} className="font-bold">
-            회원가입/로그인
-          </Button>
-        </Link>
-      </section>
+      <Suspense>
+        <UserMenu />
+      </Suspense>
     </header>
   );
 }
