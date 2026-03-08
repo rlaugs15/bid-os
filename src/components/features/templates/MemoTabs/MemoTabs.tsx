@@ -1,31 +1,8 @@
 "use client";
 
-import { Memo } from "@/types/memos";
+import { unqualifiedMockMemos, whelkMockMemos } from "@/mock-data";
 import { useState } from "react";
 import MemoAccordion from "./MemoAccordion";
-
-const memoData: Memo[] = [
-  {
-    id: "gdsg",
-    user_id: "sdfsdf34",
-    type: "whelk",
-    content: "@※협정이 필요한 공고입니다.",
-  },
-  {
-    id: "fdsfg",
-    user_id: "sdfsddf",
-    type: "whelk",
-    content: "@※단가계약 공고 {금액}",
-    description: "단가계약 공고 작성용",
-  },
-  {
-    id: "awe423",
-    user_id: "sdfsfdf",
-    type: "whelk",
-    content: "@※현장방문 공고 {날짜} {실험}",
-    description: "현장방문 공고 작성용",
-  },
-];
 
 const tabs = ["@메모", "무자격"];
 
@@ -48,7 +25,10 @@ export default function MemoTabs() {
       </div>
 
       {/* 탭 내용 */}
-      <div className="mt-4">{currentTab === "@메모" && <MemoAccordion memos={memoData} />}</div>
+      <div className="mt-4">
+        {currentTab === "@메모" && <MemoAccordion memos={whelkMockMemos} />}
+        {currentTab === "무자격" && <MemoAccordion memos={unqualifiedMockMemos} />}
+      </div>
     </section>
   );
 }
