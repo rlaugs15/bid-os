@@ -10,6 +10,9 @@ type Props = {
 };
 
 export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
+  const copyPossibility = () => {
+    navigator.clipboard.writeText("가능");
+  };
   return (
     <section className="flex space-x-20">
       <div className="space-y-1">
@@ -21,6 +24,14 @@ export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
         />
         <Button variant={copied ? "outline" : "default"} size="sm" className="w-30" onClick={copy}>
           {copied ? "복사됨" : "복사"}
+        </Button>
+        <Button
+          variant="default"
+          size="sm"
+          className="w-30 ml-5 bg-blue-800"
+          onClick={copyPossibility}
+        >
+          가능
         </Button>
       </div>
 
