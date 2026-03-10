@@ -467,7 +467,22 @@ model user {
   description String?
   is_deleted  Boolean?
   deleted_at  DateTime? @db.Timestamp(6)
+  memo        memo[]
   users       users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model memo {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type        String   @default("unqualified")
+  content     String
+  description String?
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime @default(now()) @db.Timestamptz(6)
+  user_id     String   @default(dbgenerated("auth.uid()")) @db.Uuid
+  user        user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 
   @@schema("public")
 }
