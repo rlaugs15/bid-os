@@ -2,12 +2,18 @@ import { memoKeys } from "@/services/cache/memos.cache";
 import { Memo, UpdateMemo } from "@/types/memos";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-async function fetchMemo({ id }: Pick<Memo, "id">) {
+async function fetchMemo({ id, content, description }: UpdateMemo) {
   const res = await fetch(`/api/memos/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      content,
+      description,
+    }),
   });
+
   if (!res.ok) throw new Error("메모 수정 실패");
+
   return res.json();
 }
 

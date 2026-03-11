@@ -29,3 +29,8 @@ export function toQueryString(params: Record<string, any>): string {
 
   return query.toString();
 }
+
+export function extractVariables(content: string) {
+  const matches = content.match(/{([^{}]+)}/g) || [];
+  return matches.map((v) => v.slice(1, -1).trim());
+}

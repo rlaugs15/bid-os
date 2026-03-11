@@ -3,7 +3,10 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import useCopyMemo from "@/hooks/mutations/memos/useCopyMemo";
+import { useUpdateMemo } from "@/hooks/mutations/memos/useUpdateMemo";
+import { extractVariables } from "@/lib/utils";
 import { Memo } from "@/types/memos";
 import { useState } from "react";
 import MemoDeleteButton from "./MemoDeleteButton";
@@ -22,13 +25,19 @@ export default function MemoAccordionItem({ memo }: { memo: Memo }) {
   const [isPressed, setIsPressed] = useState(false); // 클릭 순간만 outline
   const { mutate: copyMemo } = useCopyMemo();
 
+  // 수정 기능------------------------------
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [editContent, setEditContent] = useState(memo.content);
+  const [editDescription, setEditDescription] = useState(memo.description ?? "");
+
+  const { mutate: updateMemo } = useUpdateMemo();
   // ------------------------------
   // 1️. 변수 매칭
   // - {금액}, {날짜}, {장소} 등 변수를 추출
   // - 한글, 공백, 특수문자 포함 가능
   // ------------------------------
-  const variableMatches = memo.content.match(/{([^{}]+)}/g) || [];
-  const variableNames = variableMatches.map((v) => v.slice(1, -1).trim());
+  const variableNames = extractVariables(memo.content);
 
   // ------------------------------
   // 2. 변수 상태 관리
@@ -61,29 +70,41 @@ export default function MemoAccordionItem({ memo }: { memo: Memo }) {
     <AccordionItem value={String(memo.id)}>
       {/* Trigger 안에는 텍스트만 두기 */}
       <AccordionTrigger>
-        <span>
-          {/* 실시간 보기 및 변수 존재 시 번개아이콘 */}
-          {variableNames.length > 0
-            ? variableNames.reduce(
-                (text, name) => text.replace(`{${name}}`, variables[name] || `{${name}}`),
-                memo.content,
-              )
-            : memo.content}{" "}
-          {variableNames.length > 0 && "⚡"}
-        </span>
+        {isEditing ? (
+          <Input value={editContent} onChange={(e) => setEditContent(e.target.value)} />
+        ) : (
+          <span>
+            {variableNames.length > 0
+              ? variableNames.reduce(
+                  (text, name) => text.replace(`{${name}}`, variables[name] || `{${name}}`),
+                  memo.content,
+                )
+              : memo.content}{" "}
+            {variableNames.length > 0 && "⚡"}
+            {memo.description && "📄"}
+          </span>
+        )}
       </AccordionTrigger>
 
       <AccordionContent>
         {/* 설명 */}
-        {memo.description && (
-          <p className="text-text-sm mb-2">
-            {memo.description.split("\n").map((line, index) => (
-              <span key={index}>
-                {line}
-                <br />
-              </span>
-            ))}
-          </p>
+        {isEditing ? (
+          <Textarea
+            value={editDescription}
+            onChange={(e) => setEditDescription(e.target.value)}
+            className="mb-2"
+          />
+        ) : (
+          memo.description && (
+            <p className="text-text-sm mb-2">
+              {memo.description.split("\n").map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
+          )
         )}
 
         {/* 변수 입력 필드 */}
@@ -110,7 +131,23 @@ export default function MemoAccordionItem({ memo }: { memo: Memo }) {
           >
             복사
           </Button>
-          <Button onClick={() => alert("수정 기능")}>수정</Button>
+          <Button
+            onClick={() => {
+              if (isEditing) {
+                updateMemo({
+                  id: memo.id,
+                  content: editContent,
+                  description: editDescription,
+                });
+
+                setIsEditing(false);
+              } else {
+                setIsEditing(true);
+              }
+            }}
+          >
+            {isEditing ? "저장" : "수정"}
+          </Button>
         </div>
         <MemoDeleteButton id={memo.id} />
       </div>
