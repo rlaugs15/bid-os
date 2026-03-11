@@ -6,6 +6,7 @@ export interface Memo {
   description?: string | null;
   type: MemoType;
   user_id: string;
+  use_count: number;
 }
 
 export interface CreateMemo {
