@@ -3,8 +3,10 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useCopyMemo from "@/hooks/mutations/memos/useCopyMemo";
 import { Memo } from "@/types/memos";
 import { useState } from "react";
+import MemoDeleteButton from "./MemoDeleteButton";
 
 /**
  * MemoAccordionItem
@@ -18,6 +20,7 @@ import { useState } from "react";
 
 export default function MemoAccordionItem({ memo }: { memo: Memo }) {
   const [isPressed, setIsPressed] = useState(false); // 클릭 순간만 outline
+  const { mutate: copyMemo } = useCopyMemo();
 
   // ------------------------------
   // 1️. 변수 매칭
@@ -47,6 +50,9 @@ export default function MemoAccordionItem({ memo }: { memo: Memo }) {
     // 클립보드에 복사
     navigator.clipboard.writeText(copiedContent);
 
+    // 카운트 증가 API 호출
+    copyMemo(memo.id);
+
     // 변수 입력 초기화
     setVariables(Object.fromEntries(variableNames.map((name) => [name, ""])));
   };
@@ -69,7 +75,16 @@ export default function MemoAccordionItem({ memo }: { memo: Memo }) {
 
       <AccordionContent>
         {/* 설명 */}
-        {memo.description && <p className="text-text-sm mb-2">{memo.description}</p>}
+        {memo.description && (
+          <p className="text-text-sm mb-2">
+            {memo.description.split("\n").map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </p>
+        )}
 
         {/* 변수 입력 필드 */}
         {variableNames.length > 0 &&
@@ -97,9 +112,7 @@ export default function MemoAccordionItem({ memo }: { memo: Memo }) {
           </Button>
           <Button onClick={() => alert("수정 기능")}>수정</Button>
         </div>
-        <Button onClick={() => alert("삭제 기능")} className="bg-green-700">
-          삭제
-        </Button>
+        <MemoDeleteButton id={memo.id} />
       </div>
     </AccordionItem>
   );
