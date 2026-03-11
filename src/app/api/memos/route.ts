@@ -8,8 +8,8 @@ export async function GET(req: NextRequest) {
 
   const memos = await prisma.memo.findMany({
     where: type ? { type } : undefined,
-    orderBy: { created_at: "desc" },
-    select: { id: true, content: true, description: true, type: true },
+    orderBy: [{ use_count: "desc" }, { created_at: "desc" }], // 같은 use_count끼린 최신이 위로
+    select: { id: true, content: true, description: true, type: true, use_count: true },
   });
 
   return NextResponse.json(memos);
@@ -34,6 +34,13 @@ export async function POST(req: NextRequest) {
       description: description ? description : undefined,
       type,
       user_id: me.user_id,
+    },
+    select: {
+      id: true,
+      content: true,
+      description: true,
+      type: true,
+      use_count: true,
     },
   });
 

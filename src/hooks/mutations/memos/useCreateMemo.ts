@@ -28,6 +28,7 @@ export function useCreateMemo() {
                 ...newMemo,
                 id: `temp-id-${Date.now()}`,
                 user_id: `me-${Date.now()}`,
+                use_count: 0,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
               },
