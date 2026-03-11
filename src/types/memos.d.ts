@@ -3,14 +3,15 @@ export type MemoType = "whelk" | "unqualified";
 export interface Memo {
   id: string;
   content: string;
-  description?: string;
+  description?: string | null;
   type: MemoType;
   user_id: string;
+  use_count: number;
 }
 
 export interface CreateMemo {
   content: string;
-  description?: string;
+  description?: string | null;
   type: MemoType;
 }
 
