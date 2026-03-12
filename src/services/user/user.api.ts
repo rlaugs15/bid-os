@@ -14,39 +14,23 @@ export async function fetchUserSupabase() {
   return user?.id ?? null;
 }
 
-async function fetchUserPrisma(userId: string) {
-  try {
-    const user = await prisma.user.findUnique({
-      where: { user_id: userId },
-      select: {
-        user_id: true,
-        nickname: true,
-        image_url: true,
-        description: true,
-      },
-    });
-
-    if (!user) return null;
-
-    return {
-      ...user,
-    };
-  } catch (error) {
-    console.error(`로그인 유저 조회 실패 (${userId})`, error);
-    return null;
-  }
-}
-
 async function getCachedUser(userId: string) {
   "use cache";
 
-  // 조건별 태그
   cacheTag(userTags.me());
-
-  // 전체 무효화용 태그
   cacheTag(globalTags.userAll);
 
-  return fetchUserPrisma(userId);
+  const user = await prisma.user.findUnique({
+    where: { user_id: userId },
+    select: {
+      user_id: true,
+      nickname: true,
+      image_url: true,
+      description: true,
+    },
+  });
+
+  return user ?? null;
 }
 
 export async function getUser() {
