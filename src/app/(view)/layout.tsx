@@ -9,16 +9,13 @@ interface ViewLayoutProps extends StrictPropsWithChildren {
 
 export default async function ViewLayout({ modal, children }: ViewLayoutProps) {
   return (
-    <div className="w-full flex flex-col min-w-360">
+    <div className="w-full flex flex-col">
       {modal}
       <Header />
       <SidebarProvider>
         <AppSidebar className="mt-15" />
         <SidebarInset>
-          <div className="grow pt-15">
-            <h1 className="text-red-300">{}</h1>
-            {children}
-          </div>
+          <div className="grow pt-15">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </div>
