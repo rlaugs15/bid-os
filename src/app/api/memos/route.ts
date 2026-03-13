@@ -1,4 +1,5 @@
 import { getUser } from "@/services/user/user.api";
+import { MemoType } from "@/types/memos";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "prisma/prisma";
 
@@ -24,7 +25,9 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { content, type, description } = body;
 
-  if (!content || !["whelk", "unqualified"].includes(type)) {
+  const validTypes: MemoType[] = ["whelk", "unqualified", "hash"];
+
+  if (!content || !validTypes.includes(type)) {
     return NextResponse.json({ error: "잘못된 요청" }, { status: 400 });
   }
 

@@ -46,12 +46,17 @@ export default function MemoAccordion({ memos, type }: MemoAccordionProps) {
 
   const onSubmit = (values: z.infer<typeof memoSchema>) => {
     const isWhelkType = type === "whelk";
+    const isHashType = type === "hash";
 
     let content = values.content;
 
     if (isWhelkType && !content.startsWith("@※")) {
       content = `@※${content}`;
     }
+    if (isHashType && !content.startsWith("#")) {
+      content = `#${content}`;
+    }
+
     mutate({
       content,
       description: values.description ?? null,

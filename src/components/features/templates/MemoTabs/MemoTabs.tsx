@@ -5,12 +5,19 @@ import { useMemos } from "@/hooks/queries/memos/useMemos";
 import { useState } from "react";
 import MemoAccordion from "./MemoAccordion";
 
-const tabs = ["@메모", "무자격"];
+const tabMap = {
+  "@메모": "whelk",
+  무자격: "unqualified",
+  "#메모": "hash",
+} as const;
+
+const tabs = Object.keys(tabMap) as (keyof typeof tabMap)[];
 
 export default function MemoTabs() {
   const [currentTab, setCurrentTab] = useState(tabs[0]);
-  const type = currentTab === "@메모" ? "whelk" : "unqualified";
+  const type = tabMap[currentTab];
   const { data: memo } = useMemos(type);
+
   const { data: me } = useUser();
   return (
     <section>
@@ -34,10 +41,7 @@ export default function MemoTabs() {
             로그인을 하시면 탭 기능을 이용할 수 있습니다.
           </p>
         ) : (
-          <>
-            {currentTab === "@메모" && <MemoAccordion memos={memo ?? []} type={type} />}
-            {currentTab === "무자격" && <MemoAccordion memos={memo ?? []} type={type} />}
-          </>
+          <MemoAccordion memos={memo ?? []} type={type} />
         )}
       </div>
     </section>

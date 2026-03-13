@@ -1,4 +1,4 @@
-export type MemoType = "whelk" | "unqualified";
+export type MemoType = "whelk" | "unqualified" | "hash";
 
 export interface Memo {
   id: string;
