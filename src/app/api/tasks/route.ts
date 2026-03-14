@@ -41,3 +41,20 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json(tasks);
 }
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+
+  const { title, description, priority, due_at, remind_at } = body;
+  const task = await prisma.task.create({
+    data: {
+      title,
+      description,
+      priority,
+      due_at,
+      remind_at,
+    },
+  });
+
+  return NextResponse.json(task);
+}
