@@ -1,11 +1,12 @@
 import { getUser } from "@/services/user/user.api";
 import { MemoType } from "@/types/memos";
 import { NextRequest, NextResponse } from "next/server";
+import { memo_type } from "prisma/app/generated/prisma/enums";
 import prisma from "prisma/prisma";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const type = searchParams.get("type");
+  const type = searchParams.get("type") as memo_type | null;
 
   const memos = await prisma.memo.findMany({
     where: type ? { type } : undefined,
