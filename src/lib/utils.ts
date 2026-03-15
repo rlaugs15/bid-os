@@ -1,3 +1,4 @@
+import { Board, Task } from "@/types/kanban";
 import { clsx, type ClassValue } from "clsx";
 import prisma from "prisma/prisma";
 import { twMerge } from "tailwind-merge";
@@ -152,4 +153,84 @@ export async function calculateTaskPosition(params: {
   if (!lastTask) return GAP;
 
   return lastTask.position + GAP;
+}
+
+// -----------------------------------칸반 관련 프론트용 board 유틸-----------------------------------
+export function removeTaskFromBoard(board: Board, taskId: string) {
+  return {
+    ...board,
+    columns: board.columns.map((column) => ({
+      ...column,
+      tasks: column.tasks.filter((task) => task.id !== taskId),
+    })),
+  };
+}
+
+export function insertTaskIntoBoard(params: {
+  board: Board;
+  task: Task;
+  toColumnId: string;
+  beforeTaskId?: string | null;
+  afterTaskId?: string | null;
+}) {
+  const { board, task, toColumnId, beforeTaskId, afterTaskId } = params;
+
+  return {
+    ...board,
+    columns: board.columns.map((column) => {
+      if (column.id !== toColumnId) return column;
+
+      const tasks = [...column.tasks];
+
+      if (beforeTaskId) {
+        const index = tasks.findIndex((t) => t.id === beforeTaskId);
+        if (index >= 0) {
+          tasks.splice(index, 0, task);
+          return { ...column, tasks };
+        }
+      }
+
+      if (afterTaskId) {
+        const index = tasks.findIndex((t) => t.id === afterTaskId);
+        if (index >= 0) {
+          tasks.splice(index + 1, 0, task);
+          return { ...column, tasks };
+        }
+      }
+
+      tasks.push(task);
+      return { ...column, tasks };
+    }),
+  };
+}
+
+export function moveTaskInBoard(params: {
+  board: Board;
+  taskId: string;
+  toColumnId: string;
+  beforeTaskId?: string | null;
+  afterTaskId?: string | null;
+}) {
+  const { board, taskId, toColumnId, beforeTaskId, afterTaskId } = params;
+
+  let movingTask: Task | null = null;
+
+  for (const column of board.columns) {
+    const found = column.tasks.find((task) => task.id === taskId);
+    if (found) {
+      movingTask = { ...found, column_id: toColumnId };
+      break;
+    }
+  }
+
+  if (!movingTask) return board;
+
+  const removed = removeTaskFromBoard(board, taskId);
+  return insertTaskIntoBoard({
+    board: removed,
+    task: movingTask,
+    toColumnId,
+    beforeTaskId,
+    afterTaskId,
+  });
 }
