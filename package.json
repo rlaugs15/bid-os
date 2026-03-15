@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "db:type": "supabase gen types typescript --linked > src/types/database.ts"
+    "db:type": "supabase gen types typescript --linked > src/types/database.d.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

@@ -497,12 +497,15 @@ model memo {
 model board {
   id         String   @id(map: "column_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @updatedAt @db.Timestamptz(6)
   title      String
-  user_id    String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  position   BigInt
+  user_id    String   @default(dbgenerated("auth.uid()")) @db.Uuid
   user       user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
   column     column[]
 
   @@index([user_id])
+  @@index([user_id, position])
   @@schema("public")
 }
 
@@ -511,13 +514,15 @@ model column {
   id         String   @id(map: "column_pkey1") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title      String
   created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @updatedAt @db.Timestamptz(6)
   position   BigInt
-  board_id   String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id    String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  board_id   String   @db.Uuid
+  user_id    String   @default(dbgenerated("auth.uid()")) @db.Uuid
   board      board    @relation(fields: [board_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   user       user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
   task       task[]
 
+  @@index([user_id])
   @@index([board_id, position])
   @@schema("public")
 }
@@ -527,12 +532,14 @@ model task {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title      String
   position   BigInt
-  column_id  String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  column_id  String   @db.Uuid
   created_at DateTime @default(now()) @db.Timestamptz(6)
-  user_id    String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  updated_at DateTime @updatedAt @db.Timestamptz(6)
+  user_id    String   @default(dbgenerated("auth.uid()")) @db.Uuid
   column     column   @relation(fields: [column_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   user       user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 
+  @@index([user_id])
   @@index([column_id, position])
   @@schema("public")
 }

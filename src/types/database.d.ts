@@ -12,8 +12,113 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.4"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
+      board: {
+        Row: {
+          created_at: string
+          id: string
+          position: number
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          position: number
+          title: string
+          updated_at: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          position?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "board_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      column: {
+        Row: {
+          board_id: string
+          created_at: string
+          id: string
+          position: number
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          board_id: string
+          created_at?: string
+          id?: string
+          position: number
+          title: string
+          updated_at: string
+          user_id?: string
+        }
+        Update: {
+          board_id?: string
+          created_at?: string
+          id?: string
+          position?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "column_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "board"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "column_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       memo: {
         Row: {
           content: string
@@ -57,42 +162,40 @@ export type Database = {
       }
       task: {
         Row: {
+          column_id: string
           created_at: string
-          description: string | null
-          due_at: string | null
           id: string
-          priority: Database["public"]["Enums"]["task_priority"]
-          remind_at: string | null
-          status: Database["public"]["Enums"]["task_status"]
+          position: number
           title: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          column_id: string
           created_at?: string
-          description?: string | null
-          due_at?: string | null
           id?: string
-          priority?: Database["public"]["Enums"]["task_priority"]
-          remind_at?: string | null
-          status?: Database["public"]["Enums"]["task_status"]
+          position: number
           title: string
           updated_at: string
           user_id?: string
         }
         Update: {
+          column_id?: string
           created_at?: string
-          description?: string | null
-          due_at?: string | null
           id?: string
-          priority?: Database["public"]["Enums"]["task_priority"]
-          remind_at?: string | null
-          status?: Database["public"]["Enums"]["task_status"]
+          position?: number
           title?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "task_column_id_fkey"
+            columns: ["column_id"]
+            isOneToOne: false
+            referencedRelation: "column"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "task_user_id_fkey"
             columns: ["user_id"]
@@ -147,8 +250,6 @@ export type Database = {
     }
     Enums: {
       memo_type: "whelk" | "unqualified" | "hash"
-      task_priority: "low" | "medium" | "high"
-      task_status: "todo" | "doing" | "done"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -274,11 +375,12 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       memo_type: ["whelk", "unqualified", "hash"],
-      task_priority: ["low", "medium", "high"],
-      task_status: ["todo", "doing", "done"],
     },
   },
 } as const
