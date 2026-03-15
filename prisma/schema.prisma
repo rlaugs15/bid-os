@@ -467,6 +467,8 @@ model user {
   description String?
   is_deleted  Boolean?
   deleted_at  DateTime? @db.Timestamp(6)
+  board       board[]
+  column      column[]
   memo        memo[]
   task        task[]
   users       users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -492,25 +494,46 @@ model memo {
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model task {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id     String        @default(dbgenerated("auth.uid()")) @db.Uuid
-  title       String
-  description String?
-  status      task_status   @default(todo)
-  priority    task_priority @default(medium)
-
-  due_at       DateTime? @db.Timestamptz(6)
-  remind_at    DateTime? @db.Timestamptz(6)
-  completed_at DateTime? @db.Timestamptz(6)
-
+model board {
+  id         String   @id(map: "column_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @updatedAt @db.Timestamptz(6)
+  title      String
+  user_id    String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user       user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  column     column[]
 
   @@index([user_id])
-  @@index([user_id, status])
-  @@index([user_id, status, due_at])
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model column {
+  id         String   @id(map: "column_pkey1") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title      String
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  position   BigInt
+  board_id   String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  board      board    @relation(fields: [board_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  task       task[]
+
+  @@index([board_id, position])
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model task {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title      String
+  position   BigInt
+  column_id  String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  user_id    String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  column     column   @relation(fields: [column_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([column_id, position])
   @@schema("public")
 }
 
@@ -588,22 +611,6 @@ enum memo_type {
   whelk
   unqualified
   hash
-
-  @@schema("public")
-}
-
-enum task_status {
-  todo
-  doing
-  done
-
-  @@schema("public")
-}
-
-enum task_priority {
-  low
-  medium
-  high
 
   @@schema("public")
 }
