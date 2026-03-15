@@ -8,12 +8,12 @@ async function moveTask({ id, column_id, position }: Pick<Task, "id" | "column_i
     body: JSON.stringify({ column_id, position }),
   });
 
-  if (!res.ok) throw new Error();
+  if (!res.ok) throw new Error("이동에 실패했습니다.");
 
   return res.json();
 }
 
-export function useMoveTask() {
+export default function useMoveTask() {
   const qc = useQueryClient();
 
   return useMutation({

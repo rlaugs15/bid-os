@@ -9,7 +9,7 @@ async function fetchKanban() {
   return res.json();
 }
 
-export function useKanban() {
+export default function useKanban() {
   return useQuery({
     queryKey: kanbanKeys.board(),
     queryFn: fetchKanban,

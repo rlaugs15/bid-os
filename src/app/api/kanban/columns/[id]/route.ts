@@ -5,20 +5,20 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const { id } = await params;
   const body = await req.json();
 
-  const task = await prisma.task.update({
+  const column = await prisma.column.update({
     where: { id },
     data: {
       title: body.title,
     },
   });
 
-  return NextResponse.json(task);
+  return NextResponse.json(column);
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  await prisma.task.delete({
+  await prisma.column.delete({
     where: { id },
   });
 
