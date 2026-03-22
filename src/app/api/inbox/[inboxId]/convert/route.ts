@@ -45,7 +45,7 @@ export async function PATCH(
   const note = await prisma.notes.create({
     data: {
       user_id: user.user_id,
-      title: inbox.raw_text,
+      title: inbox.raw_text ?? "제목 없음",
       content: "",
       type: "general",
       source_inbox_id: inbox.id,
