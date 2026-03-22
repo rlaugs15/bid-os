@@ -3,9 +3,13 @@ import { MemoType } from "@/types/memos";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "prisma/prisma";
 
+const validTypes: MemoType[] = ["whelk", "unqualified", "hash"];
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const type = searchParams.get("type");
+  const rawType = searchParams.get("type");
+
+  const type = validTypes.includes(rawType as MemoType) ? (rawType as MemoType) : null;
 
   const memos = await prisma.memo.findMany({
     where: type ? { type } : undefined,
