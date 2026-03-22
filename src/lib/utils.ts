@@ -34,3 +34,21 @@ export function extractVariables(content: string) {
   const matches = content.match(/{([^{}]+)}/g) || [];
   return matches.map((v) => v.slice(1, -1).trim());
 }
+
+//공통 fetch 함수 - JSON 응답을 기대하는 API 요청에 사용
+export async function fetchJson<T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> {
+  const response = await fetch(input, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...(init?.headers ?? {}),
+    },
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || "Request failed");
+  }
+
+  return (await response.json()) as T;
+}
