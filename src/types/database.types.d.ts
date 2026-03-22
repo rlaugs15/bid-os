@@ -14,34 +14,40 @@ export type Database = {
   }
   public: {
     Tables: {
-      board: {
+      cases: {
         Row: {
+          bid_number: string
           created_at: string
           id: string
-          position: number
+          opened_at: string | null
+          status: string
           title: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          bid_number: string
           created_at?: string
           id?: string
-          position?: number
+          opened_at?: string | null
+          status?: string
           title: string
-          updated_at: string
+          updated_at?: string
           user_id?: string
         }
         Update: {
+          bid_number?: string
           created_at?: string
           id?: string
-          position?: number
+          opened_at?: string | null
+          status?: string
           title?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "board_user_id_fkey"
+            foreignKeyName: "cases_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
@@ -49,44 +55,82 @@ export type Database = {
           },
         ]
       }
-      column: {
+      companies: {
         Row: {
-          board_id: string
+          business_number: string | null
           created_at: string
           id: string
-          position: number
-          title: string
+          name: string
+          status: string
           updated_at: string
           user_id: string
         }
         Insert: {
-          board_id: string
+          business_number?: string | null
           created_at?: string
           id?: string
-          position: number
-          title: string
-          updated_at: string
+          name: string
+          status?: string
+          updated_at?: string
           user_id?: string
         }
         Update: {
-          board_id?: string
+          business_number?: string | null
           created_at?: string
           id?: string
-          position?: number
-          title?: string
+          name?: string
+          status?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "column_board_id_fkey"
-            columns: ["board_id"]
+            foreignKeyName: "companies_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "board"
+            referencedRelation: "user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      inboxes: {
+        Row: {
+          converted_note_id: string | null
+          created_at: string
+          id: string
+          raw_text: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          converted_note_id?: string | null
+          created_at?: string
+          id?: string
+          raw_text?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          converted_note_id?: string | null
+          created_at?: string
+          id?: string
+          raw_text?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inboxes_converted_note_id_fkey"
+            columns: ["converted_note_id"]
+            isOneToOne: false
+            referencedRelation: "notes"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "column_user_id_fkey"
+            foreignKeyName: "inboxes_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
@@ -135,47 +179,119 @@ export type Database = {
           },
         ]
       }
-      task: {
+      note_cases: {
         Row: {
-          column_id: string
+          case_id: string
           created_at: string
-          description: string | null
           id: string
-          position: number
+          note_id: string
+        }
+        Insert: {
+          case_id?: string
+          created_at?: string
+          id?: string
+          note_id?: string
+        }
+        Update: {
+          case_id?: string
+          created_at?: string
+          id?: string
+          note_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "note_cases_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "note_cases_note_id_fkey"
+            columns: ["note_id"]
+            isOneToOne: false
+            referencedRelation: "notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      note_companies: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          note_id: string
+        }
+        Insert: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          note_id?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          note_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "note_companies_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "note_companies_note_id_fkey"
+            columns: ["note_id"]
+            isOneToOne: false
+            referencedRelation: "notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notes: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: string
+          source_inbox_id: string
           title: string
+          type: string
           updated_at: string
           user_id: string
         }
         Insert: {
-          column_id: string
+          content?: string | null
           created_at?: string
-          description?: string | null
           id?: string
-          position: number
+          source_inbox_id?: string
           title: string
-          updated_at: string
+          type?: string
+          updated_at?: string
           user_id?: string
         }
         Update: {
-          column_id?: string
+          content?: string | null
           created_at?: string
-          description?: string | null
           id?: string
-          position?: number
+          source_inbox_id?: string
           title?: string
+          type?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "task_column_id_fkey"
-            columns: ["column_id"]
+            foreignKeyName: "notes_source_inbox_id_fkey"
+            columns: ["source_inbox_id"]
             isOneToOne: false
-            referencedRelation: "column"
+            referencedRelation: "inboxes"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "task_user_id_fkey"
+            foreignKeyName: "notes_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
