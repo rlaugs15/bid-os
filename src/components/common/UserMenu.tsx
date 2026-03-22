@@ -6,15 +6,15 @@ import { Button } from "../ui/button";
 import UserDropdown from "./UserDropdown";
 
 interface UserMenuProps {
-  me?: User;
+  me: User | null;
 }
 
 export default function UserMenu({ me }: UserMenuProps) {
   return (
     <section>
-      {me ? (
+      {!me ? (
         <Link href="/login">
-          <Button variant={"ghost"} className="font-bold">
+          <Button variant="ghost" className="font-bold">
             회원가입/로그인
           </Button>
         </Link>
