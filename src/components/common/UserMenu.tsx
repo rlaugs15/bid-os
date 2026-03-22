@@ -1,13 +1,18 @@
-import { getUser } from "@/services/user/user.api";
+"use client";
+
+import { User } from "@/types/user";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import UserDropdown from "./UserDropdown";
 
-export default async function UserMenu() {
-  const me = await getUser();
+interface UserMenuProps {
+  me?: User;
+}
+
+export default function UserMenu({ me }: UserMenuProps) {
   return (
     <section>
-      {!me ? (
+      {me ? (
         <Link href="/login">
           <Button variant={"ghost"} className="font-bold">
             회원가입/로그인

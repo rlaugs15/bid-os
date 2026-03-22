@@ -16,6 +16,7 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import useUser from "@/hooks/mutations/user/useUser";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -50,12 +51,11 @@ const data = {
   ],
 };
 
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  userName: string;
-}
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {}
 
-export function AppSidebar({ userName, ...props }: AppSidebarProps) {
+export function AppSidebar({ ...props }: AppSidebarProps) {
   const pathname = usePathname();
+  const { data: me, isLoading } = useUser();
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -67,7 +67,9 @@ export function AppSidebar({ userName, ...props }: AppSidebarProps) {
                   <GalleryVerticalEnd className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-bold">{userName}</span>
+                  <span className="font-bold">
+                    {isLoading ? "로딩 중..." : me?.nickname || "사용자"}
+                  </span>
                 </div>
               </Link>
             </SidebarMenuButton>
