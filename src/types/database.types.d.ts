@@ -98,7 +98,7 @@ export type Database = {
           converted_note_id: string | null
           created_at: string
           id: string
-          raw_text: string
+          raw_text: string | null
           status: string
           updated_at: string
           user_id: string
@@ -107,7 +107,7 @@ export type Database = {
           converted_note_id?: string | null
           created_at?: string
           id?: string
-          raw_text?: string
+          raw_text?: string | null
           status?: string
           updated_at?: string
           user_id?: string
@@ -116,7 +116,7 @@ export type Database = {
           converted_note_id?: string | null
           created_at?: string
           id?: string
-          raw_text?: string
+          raw_text?: string | null
           status?: string
           updated_at?: string
           user_id?: string
@@ -256,7 +256,7 @@ export type Database = {
           content: string | null
           created_at: string
           id: string
-          source_inbox_id: string
+          source_inbox_id: string | null
           title: string
           type: string
           updated_at: string
@@ -266,7 +266,7 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: string
-          source_inbox_id?: string
+          source_inbox_id?: string | null
           title: string
           type?: string
           updated_at?: string
@@ -276,7 +276,7 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: string
-          source_inbox_id?: string
+          source_inbox_id?: string | null
           title?: string
           type?: string
           updated_at?: string
