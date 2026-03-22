@@ -2,3 +2,11 @@
 export type StrictPropsWithChildren<P = unknown> = P & {
   children: ReactNode;
 };
+
+export interface PaginationResponse<T> {
+  data: T[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+}
