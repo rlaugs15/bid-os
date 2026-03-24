@@ -74,7 +74,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<NoteItem 
       title: body.title,
       content: body.content ?? "",
       type: body.type ?? "general",
-      source_inbox_id: body.source_inbox_id ?? undefined,
     },
   });
 

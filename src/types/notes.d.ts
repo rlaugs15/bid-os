@@ -1,3 +1,13 @@
+// ===== Types =====
+
+export type NoteType = "general" | "case" | "company"; // 그냥메모 / 공고관련 / 업체관련
+
+export type CaseStatus = "active" | "closed"; // 공고 진행중 / 종료
+
+export type CompanyStatus = "active" | "inactive"; // 업체 활동중 / 활동중지
+
+// ===== Relations =====
+
 export interface NoteCaseRelation {
   id: string;
   created_at: string;
@@ -14,13 +24,14 @@ export interface NoteCompanyRelation {
   companies?: CompanyItem;
 }
 
+// ===== Core Models =====
+
 export interface NoteItem {
   id: string;
   user_id: string;
   title: string;
   content: string | null;
-  type: string;
-  source_inbox_id: string | null;
+  type: NoteType;
   created_at: string;
   updated_at: string;
   note_cases?: NoteCaseRelation[];
@@ -33,7 +44,7 @@ export interface CaseItem {
   user_id: string;
   bid_number: string;
   title: string;
-  status: string;
+  status: CaseStatus;
   opened_at: string | null;
   updated_at: string;
   note_cases?: NoteCaseRelation[];
@@ -45,7 +56,7 @@ export interface CompanyItem {
   user_id: string;
   name: string;
   business_number: string | null;
-  status: string;
+  status: CompanyStatus;
   updated_at: string;
   note_companies?: NoteCompanyRelation[];
 }
@@ -54,82 +65,83 @@ export interface InboxItem {
   id: string;
   user_id: string;
   raw_text: string;
-  status: string;
   created_at: string;
-  updated_at: string;
-  converted_note_id: string | null;
 }
+
+// ===== List Params =====
 
 export interface NoteListParams {
   page: number;
   pageSize: number;
   keyword?: string;
-  type?: string;
+  type?: NoteType;
 }
 
 export interface CaseListParams {
   page: number;
   pageSize: number;
   keyword?: string;
-  status?: string;
+  status?: CaseStatus;
 }
 
 export interface CompanyListParams {
   page: number;
   pageSize: number;
   keyword?: string;
-  status?: string;
+  status?: CompanyStatus;
 }
 
 export interface InboxListParams {
   page: number;
   pageSize: number;
   keyword?: string;
-  status?: string;
 }
+
+// ===== Requests =====
 
 export interface CreateNoteRequest {
   title: string;
   content?: string;
-  type?: string;
-  source_inbox_id?: string | null;
+  type?: NoteType;
 }
 
 export interface UpdateNoteRequest {
   title?: string;
   content?: string | null;
-  type?: string;
+  type?: NoteType;
 }
 
 export interface CreateCaseRequest {
   bid_number: string;
   title: string;
-  status?: string;
+  status?: CaseStatus;
   opened_at?: string | null;
 }
 
 export interface UpdateCaseRequest {
   bid_number?: string;
   title?: string;
-  status?: string;
+  status?: CaseStatus;
   opened_at?: string | null;
 }
 
 export interface CreateCompanyRequest {
   name: string;
   business_number?: string | null;
-  status?: string;
+  status?: CompanyStatus;
 }
 
 export interface UpdateCompanyRequest {
   name?: string;
   business_number?: string | null;
-  status?: string;
+  status?: CompanyStatus;
 }
 
 export interface CreateInboxRequest {
   raw_text: string;
 }
+
+// ===== Relations Requests =====
 
 export interface ConnectCaseToNoteRequest {
   caseId: string;

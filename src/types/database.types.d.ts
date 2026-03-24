@@ -95,40 +95,24 @@ export type Database = {
       }
       inboxes: {
         Row: {
-          converted_note_id: string | null
           created_at: string
           id: string
           raw_text: string | null
-          status: string
-          updated_at: string
           user_id: string
         }
         Insert: {
-          converted_note_id?: string | null
           created_at?: string
           id?: string
           raw_text?: string | null
-          status?: string
-          updated_at?: string
           user_id?: string
         }
         Update: {
-          converted_note_id?: string | null
           created_at?: string
           id?: string
           raw_text?: string | null
-          status?: string
-          updated_at?: string
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "inboxes_converted_note_id_fkey"
-            columns: ["converted_note_id"]
-            isOneToOne: false
-            referencedRelation: "notes"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "inboxes_user_id_fkey"
             columns: ["user_id"]
@@ -256,7 +240,6 @@ export type Database = {
           content: string | null
           created_at: string
           id: string
-          source_inbox_id: string | null
           title: string
           type: string
           updated_at: string
@@ -266,7 +249,6 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: string
-          source_inbox_id?: string | null
           title: string
           type?: string
           updated_at?: string
@@ -276,20 +258,12 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: string
-          source_inbox_id?: string | null
           title?: string
           type?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "notes_source_inbox_id_fkey"
-            columns: ["source_inbox_id"]
-            isOneToOne: false
-            referencedRelation: "inboxes"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "notes_user_id_fkey"
             columns: ["user_id"]
