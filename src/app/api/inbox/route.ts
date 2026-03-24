@@ -64,8 +64,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<InboxItem
     data: {
       user_id: user.user_id,
       raw_text: body.raw_text,
-      status: "pending",
-      converted_note_id: null,
     },
   });
 

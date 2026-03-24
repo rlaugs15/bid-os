@@ -12,7 +12,6 @@ export default function useInboxes(params: InboxListParams) {
         page: String(params.page),
         pageSize: String(params.pageSize),
         ...(params.keyword ? { keyword: params.keyword } : {}),
-        ...(params.status ? { status: params.status } : {}),
       });
 
       return fetchJson<PaginationResponse<InboxItem>>(`/api/inbox?${searchParams.toString()}`);
