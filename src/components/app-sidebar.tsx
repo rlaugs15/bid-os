@@ -31,8 +31,8 @@ const data = {
           url: "/inbox",
         },
         {
-          title: "메모",
-          url: "#",
+          title: "노트",
+          url: "/notes",
         },
         {
           title: "공고",

@@ -8,15 +8,16 @@ interface ConvertInboxContext {
 }
 
 export async function PATCH(
-  _request: NextRequest,
+  request: NextRequest,
   context: ConvertInboxContext,
-): Promise<NextResponse<NoteItem | string>> {
+): Promise<NextResponse<Pick<NoteItem, "id"> | string>> {
   const user = await getUser();
   if (!user) {
     return NextResponse.json("Unauthorized", { status: 401 });
   }
 
   const { inboxId } = await context.params;
+  const body = await request.json();
 
   // 1. inbox 조회
   const inbox = await prisma.inboxes.findFirst({
@@ -34,9 +35,12 @@ export async function PATCH(
   const note = await prisma.notes.create({
     data: {
       user_id: user.user_id,
-      title: inbox.raw_text ?? "제목 없음",
-      content: "",
+      title: body.title ?? inbox.raw_text ?? "제목 없음",
+      content: body.content ?? "",
       type: "general",
+    },
+    select: {
+      id: true,
     },
   });
 
@@ -48,5 +52,5 @@ export async function PATCH(
   });
 
   // 4. 반환
-  return NextResponse.json(note as unknown as NoteItem);
+  return NextResponse.json(note);
 }

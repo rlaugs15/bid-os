@@ -98,6 +98,11 @@ export interface InboxListParams {
 }
 
 // ===== Requests =====
+export interface ConvertInboxRequest {
+  inboxId: string;
+  title?: string;
+  content?: string;
+}
 
 export interface CreateNoteRequest {
   title: string;

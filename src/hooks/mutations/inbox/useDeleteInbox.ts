@@ -2,7 +2,7 @@ import { fetchJson } from "@/lib/utils";
 import { inboxKeys } from "@/services/cache/notes.chache";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function useDeleteInbox() {
+export default function useDeleteInbox(options?: { onSuccess?: () => void }) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -11,7 +11,8 @@ export default function useDeleteInbox() {
         method: "DELETE",
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: inboxKeys.lists() });
+      queryClient.resetQueries({ queryKey: inboxKeys.lists() });
+      options?.onSuccess?.();
     },
   });
 }
