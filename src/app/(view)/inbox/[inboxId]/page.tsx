@@ -19,7 +19,7 @@ export default function InboxDetailPage() {
 
   return (
     <PageContainer>
-      <PageHeader title="Inbox 상세" description="Inbox 내용을 확인하고 메모로 변환하는 페이지" />
+      <PageHeader title="Inbox 상세" description="Inbox 내용을 확인하고 노트로 변환하는 페이지" />
 
       {/* 원문 */}
       <InboxInfo

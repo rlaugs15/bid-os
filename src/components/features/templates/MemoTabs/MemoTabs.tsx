@@ -1,8 +1,9 @@
 "use client";
 
+import Tabs from "@/components/common/Tabs";
 import useUser from "@/hooks/mutations/user/useUser";
 import { useMemos } from "@/hooks/queries/memos/useMemos";
-import { useState } from "react";
+import { useTabMap } from "@/hooks/useTabMap";
 import MemoAccordion from "./MemoAccordion";
 
 const tabMap = {
@@ -11,28 +12,15 @@ const tabMap = {
   "#메모": "hash",
 } as const;
 
-const tabs = Object.keys(tabMap) as (keyof typeof tabMap)[];
-
 export default function MemoTabs() {
-  const [currentTab, setCurrentTab] = useState(tabs[0]);
-  const type = tabMap[currentTab];
+  const { tabs, currentTab, setCurrentTab, currentValue: type } = useTabMap(tabMap);
   const { data: memo } = useMemos(type);
 
   const { data: me } = useUser();
   return (
     <section>
       {/* 탭 메뉴 */}
-      <div className="flex gap-2 border-b mb-4">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            className={`px-4 py-2 ${currentTab === tab ? "border-b-2 border-black font-bold" : ""}`}
-            onClick={() => setCurrentTab(tab)}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
+      <Tabs tabs={tabs} currentTab={currentTab} onChange={setCurrentTab} />
 
       {/* 탭 내용 */}
       <div className="mt-4">
