@@ -4,15 +4,7 @@ import PageHeader from "@/components/common/PageHeader";
 import NoteList from "@/components/features/notes/NoteList";
 import NoteTabs from "@/components/features/notes/NoteTabs";
 
-interface Props {
-  searchParams: Promise<{ page: string }>;
-}
-
-export default async function NotesPage({ searchParams }: Props) {
-  const { page } = await searchParams;
-  const parsedPage = Number(page);
-  const currentPage = isNaN(parsedPage) || parsedPage < 1 ? 1 : parsedPage;
-
+export default async function NotesPage() {
   return (
     <PageContainer>
       <PageHeader title="노트" description="노트 확인하는 페이지" />

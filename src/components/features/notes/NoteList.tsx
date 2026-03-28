@@ -5,15 +5,23 @@ import FallbackMessage from "@/components/common/FallbackMessage";
 import LoadingLottie from "@/components/common/LoadingLottie";
 import useNotes from "@/hooks/queries/notes/useNotes";
 import useQueryPagination from "@/hooks/useQueryPagination";
+import { useSearchParams } from "next/navigation";
 import { useRef } from "react";
 import NotesItemCard from "./NoteItemCard";
 
 export default function NoteList() {
+  const searchParams = useSearchParams();
+  const rawType = searchParams.get("type");
+
+  const type =
+    rawType === "general" || rawType === "case" || rawType === "company" ? rawType : undefined;
+
   const contentRef = useRef<HTMLElement | null>(null);
   const { currentPage, handlePageChange } = useQueryPagination("page", contentRef);
   const { data: notesData, isPending: isNotesPending } = useNotes({
     page: currentPage,
     pageSize: 12,
+    type,
   });
 
   const totalPages = Math.ceil((notesData?.totalCount ?? 0) / 12);
