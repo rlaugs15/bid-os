@@ -1,6 +1,6 @@
 "use client";
 
-import WritingButton from "@/components/common/button/WritingButton";
+import ActionButton from "@/components/common/button/ActionButton";
 import PageContainer from "@/components/common/PageContainer";
 import PageHeader from "@/components/common/PageHeader";
 import NoteTabs from "@/components/features/notes/NoteTabs";
@@ -19,7 +19,7 @@ export default function NotesPage() {
     <PageContainer>
       <PageHeader title="노트" description="노트 확인하는 페이지" />
 
-      <WritingButton label="노트 작성하기" />
+      <ActionButton label="노트 작성하기" link="/notes/new" />
 
       <section>
         {/* 탭 메뉴 */}
