@@ -2,13 +2,13 @@
 
 import { getUser } from "@/services/user/user.api";
 import { PaginationResponse } from "@/types/common";
-import { CreateNoteRequest, NoteItem } from "@/types/notes";
+import { CreateNoteRequest, NoteItem, NoteListItem } from "@/types/notes";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "prisma/prisma";
 
 export async function GET(
   request: NextRequest,
-): Promise<NextResponse<PaginationResponse<NoteItem> | string>> {
+): Promise<NextResponse<PaginationResponse<NoteListItem> | string>> {
   const user = await getUser();
   if (!user) {
     return NextResponse.json("Unauthorized", { status: 401 });
@@ -39,9 +39,18 @@ export async function GET(
     prisma.notes.count({ where }),
     prisma.notes.findMany({
       where,
-      include: {
-        note_cases: true,
-        note_companies: true,
+      select: {
+        id: true,
+        title: true,
+        type: true,
+        created_at: true,
+        updated_at: true,
+        _count: {
+          select: {
+            note_cases: true,
+            note_companies: true,
+          },
+        },
       },
       orderBy: {
         updated_at: "desc",
@@ -51,8 +60,17 @@ export async function GET(
     }),
   ]);
 
+  const mapped = notes.map((note) => ({
+    id: note.id,
+    title: note.title,
+    type: note.type,
+    created_at: note.created_at,
+    updated_at: note.updated_at,
+    case_count: note._count.note_cases,
+    company_count: note._count.note_companies,
+  }));
   return NextResponse.json({
-    data: notes as unknown as NoteItem[],
+    data: mapped as unknown as NoteListItem[],
     page,
     pageSize,
     totalCount,

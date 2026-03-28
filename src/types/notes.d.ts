@@ -38,6 +38,16 @@ export interface NoteItem {
   note_companies?: NoteCompanyRelation[];
 }
 
+export interface NoteListItem {
+  id: string;
+  title: string;
+  type: NoteType;
+  created_at: string;
+  updated_at: string;
+  case_count: number;
+  company_count: number;
+}
+
 export interface CaseItem {
   id: string;
   created_at: string;

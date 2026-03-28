@@ -1,7 +1,7 @@
 import { fetchJson } from "@/lib/utils";
 import { noteKeys } from "@/services/cache/notes.chache";
 import { PaginationResponse } from "@/types/common";
-import { NoteItem, NoteListParams } from "@/types/notes";
+import { NoteListItem, NoteListParams } from "@/types/notes";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useNotes(params: NoteListParams) {
@@ -15,7 +15,7 @@ export default function useNotes(params: NoteListParams) {
         ...(params.type ? { type: params.type } : {}),
       });
 
-      return fetchJson<PaginationResponse<NoteItem>>(`/api/notes?${searchParams.toString()}`);
+      return fetchJson<PaginationResponse<NoteListItem>>(`/api/notes?${searchParams.toString()}`);
     },
   });
 }
