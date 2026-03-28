@@ -15,7 +15,8 @@ export default function useCreateNote() {
         body: JSON.stringify(body),
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: noteKeys.lists() });
+      //refetchType는 전체 페이지에서 데이터를 refetch하도록 설정(안 하면 현재페이지만 됨)
+      queryClient.invalidateQueries({ queryKey: noteKeys.lists(), refetchType: "all" });
       router.replace("/notes");
     },
   });

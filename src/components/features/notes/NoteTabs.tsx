@@ -17,7 +17,7 @@ export default function NoteTabs({ onChangeType }: { onChangeType?: (type: strin
     onChangeType?.(value);
   };
   return (
-    <div className="flex gap-2 border-b mb-4">
+    <section className="flex gap-2 border-b my-4">
       {tabs.map((tab) => (
         <button
           key={tab.value}
@@ -29,6 +29,6 @@ export default function NoteTabs({ onChangeType }: { onChangeType?: (type: strin
           {tab.label}
         </button>
       ))}
-    </div>
+    </section>
   );
 }
