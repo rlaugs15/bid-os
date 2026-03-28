@@ -3,7 +3,7 @@
 import Tabs from "@/components/common/Tabs";
 import useUser from "@/hooks/mutations/user/useUser";
 import { useMemos } from "@/hooks/queries/memos/useMemos";
-import { useTabMap } from "@/hooks/useTabMap";
+import useTabMap from "@/hooks/useTabMap";
 import MemoAccordion from "./MemoAccordion";
 
 const tabMap = {

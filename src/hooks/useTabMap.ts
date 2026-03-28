@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useTabMap<TTab extends string, TValue extends string>(
+export default function useTabMap<TTab extends string, TValue extends string>(
   tabMap: Record<TTab, TValue>,
 ) {
   const tabs = Object.keys(tabMap) as TTab[];

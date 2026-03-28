@@ -1,6 +1,6 @@
 // ===== Types =====
 
-export type NoteType = "general" | "case" | "company"; // 그냥메모 / 공고관련 / 업체관련
+export type NoteType = "general" | "case" | "company"; // 미분류 / 공고관련 / 업체관련
 
 export type CaseStatus = "active" | "closed"; // 공고 진행중 / 종료
 
