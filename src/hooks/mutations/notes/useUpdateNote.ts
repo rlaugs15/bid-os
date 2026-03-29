@@ -16,7 +16,7 @@ export default function useUpdateNote(noteId: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: noteKeys.detail(noteId) });
-      queryClient.invalidateQueries({ queryKey: noteKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: noteKeys.lists(), refetchType: "all" });
       router.push("/notes");
     },
   });
