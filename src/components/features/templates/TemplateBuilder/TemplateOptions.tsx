@@ -68,6 +68,45 @@ export function TemplateOptions({ template, setTemplate }: Props) {
           }
         />
       </OptionGroup>
+      <OptionGroup label="공사구분">
+        <Button
+          variant={template.type === "전문" ? "default" : "outline"}
+          onClick={() => setTemplate((prev) => ({ ...prev, type: "전문" }))}
+        >
+          전문
+        </Button>
+        <Button
+          variant={template.type === "종합" ? "default" : "outline"}
+          onClick={() => setTemplate((prev) => ({ ...prev, type: "종합" }))}
+        >
+          종합
+        </Button>
+      </OptionGroup>
+      <OptionGroup label="주력분야">
+        <div className="flex items-center gap-4">
+          <Input
+            className="w-60 text-text-xl!"
+            value={template.field === "x" ? "" : (template.field ?? "")}
+            onChange={(e) =>
+              setTemplate((prev) => ({
+                ...prev,
+                field: e.target.value,
+              }))
+            }
+          />
+          <Button
+            variant={template.field === "x" ? "default" : "outline"}
+            onClick={() =>
+              setTemplate((prev) => ({
+                ...prev,
+                field: prev.field === "x" ? undefined : "x",
+              }))
+            }
+          >
+            주력 X
+          </Button>
+        </div>
+      </OptionGroup>
       <OptionGroup label="금액확인">
         <Button
           variant={template.amountCheck?.base ? "default" : "outline"}
@@ -166,45 +205,6 @@ export function TemplateOptions({ template, setTemplate }: Props) {
         </Button>
       </OptionGroup>
 
-      <OptionGroup label="공사구분">
-        <Button
-          variant={template.type === "전문" ? "default" : "outline"}
-          onClick={() => setTemplate((prev) => ({ ...prev, type: "전문" }))}
-        >
-          전문
-        </Button>
-        <Button
-          variant={template.type === "종합" ? "default" : "outline"}
-          onClick={() => setTemplate((prev) => ({ ...prev, type: "종합" }))}
-        >
-          종합
-        </Button>
-      </OptionGroup>
-      <OptionGroup label="주력분야">
-        <div className="flex items-center gap-4">
-          <Input
-            className="w-60 text-text-xl!"
-            value={template.field === "x" ? "" : (template.field ?? "")}
-            onChange={(e) =>
-              setTemplate((prev) => ({
-                ...prev,
-                field: e.target.value,
-              }))
-            }
-          />
-          <Button
-            variant={template.field === "x" ? "default" : "outline"}
-            onClick={() =>
-              setTemplate((prev) => ({
-                ...prev,
-                field: prev.field === "x" ? undefined : "x",
-              }))
-            }
-          >
-            주력 X
-          </Button>
-        </div>
-      </OptionGroup>
       <OptionGroup label="공사현장">
         <Input
           className="w-60 text-text-xl!"

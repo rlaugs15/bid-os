@@ -16,42 +16,46 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import useUser from "@/hooks/mutations/user/useUser";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const data = {
   navMain: [
     {
-      title: "📚 인덱스",
-      url: "#",
-    },
-    {
-      title: "📋 메모 템플릿",
-      url: "/templates",
-    },
-    {
-      title: "🏢 업체 관리",
+      title: "🗓 업무 관리",
       url: "#",
       items: [
         {
-          title: "미구현",
+          title: "Inbox",
+          url: "/inbox",
+        },
+        {
+          title: "노트",
+          url: "/notes",
+        },
+        {
+          title: "공고",
+          url: "#",
+        },
+        {
+          title: "업체",
           url: "#",
         },
       ],
     },
     {
-      title: "🗓 업무 기록",
-      url: "#",
-    },
-    {
-      title: "📝 일반 메모",
-      url: "#",
+      title: "📋 메모 템플릿",
+      url: "/templates",
     },
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {}
+
+export function AppSidebar({ ...props }: AppSidebarProps) {
   const pathname = usePathname();
+  const { data: me, isLoading } = useUser();
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -63,7 +67,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <GalleryVerticalEnd className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-bold">김현준</span>
+                  <span className="font-bold">
+                    {isLoading ? "로딩 중..." : me?.nickname || "사용자"}
+                  </span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -80,7 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               return (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={isActive}>
-                    <Link href={item.url} className="font-bold">
+                    <Link href={item.url} className="font-bold!">
                       {item.title}
                     </Link>
                   </SidebarMenuButton>
@@ -91,7 +97,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           <SidebarMenuSubButton
                             asChild
                             isActive={pathname === item.url}
-                            className="font-light"
+                            className="font-medium"
                           >
                             <Link href={item.url}>{item.title}</Link>
                           </SidebarMenuSubButton>

@@ -449,6 +449,8 @@ model users {
   oauth_consents              oauth_consents[]
   one_time_tokens             one_time_tokens[]
   sessions                    sessions[]
+  webauthn_challenges         webauthn_challenges[]
+  webauthn_credentials        webauthn_credentials[]
   user                        user?
 
   @@index([instance_id])
@@ -458,32 +460,156 @@ model users {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model user {
-  user_id     String    @id @db.Uuid
-  created_at  DateTime? @db.Timestamp(6)
+  user_id     String      @id @db.Uuid
+  created_at  DateTime?   @db.Timestamp(6)
   email       String
   provider    String?
   nickname    String?
   image_url   String?
   description String?
   is_deleted  Boolean?
-  deleted_at  DateTime? @db.Timestamp(6)
+  deleted_at  DateTime?   @db.Timestamp(6)
+  cases       cases[]
+  companies   companies[]
+  inboxes     inboxes[]
   memo        memo[]
-  users       users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  notes       notes[]
+  users       users       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@schema("public")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model memo {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  type        String   @default("unqualified")
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type        memo_type @default(unqualified)
   content     String
   description String?
-  created_at  DateTime @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime @default(now()) @db.Timestamptz(6)
-  user_id     String   @default(dbgenerated("auth.uid()")) @db.Uuid
-  use_count   Int      @default(0)
-  user        user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
+  user_id     String    @default(dbgenerated("auth.uid()")) @db.Uuid
+  use_count   Int       @default(0)
+  user        user      @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([user_id, created_at])
+  @@index([user_id])
+  @@schema("public")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model webauthn_challenges {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String?  @db.Uuid
+  challenge_type String
+  session_data   Json
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+  expires_at     DateTime @db.Timestamptz(6)
+  users          users?   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([expires_at])
+  @@index([user_id])
+  @@schema("auth")
+}
+
+model webauthn_credentials {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String    @db.Uuid
+  credential_id    Bytes     @unique
+  public_key       Bytes
+  attestation_type String    @default("")
+  aaguid           String?   @db.Uuid
+  sign_count       BigInt    @default(0)
+  transports       Json      @default("[]")
+  backup_eligible  Boolean   @default(false)
+  backed_up        Boolean   @default(false)
+  friendly_name    String    @default("")
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime  @default(now()) @db.Timestamptz(6)
+  last_used_at     DateTime? @db.Timestamptz(6)
+  users            users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([user_id])
+  @@schema("auth")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model cases {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime     @default(now()) @db.Timestamptz(6)
+  user_id    String       @default(dbgenerated("auth.uid()")) @db.Uuid
+  bid_number String       @unique
+  title      String
+  status     String       @default("'active'")
+  opened_at  DateTime?    @db.Date
+  updated_at DateTime     @default(now()) @db.Timestamptz(6)
+  user       user         @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  note_cases note_cases[]
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model companies {
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at     DateTime         @default(now()) @db.Timestamptz(6)
+  user_id        String           @default(dbgenerated("auth.uid()")) @db.Uuid
+  name           String
+  status         String           @default("active")
+  type           company_type
+  updated_at     DateTime         @default(now()) @db.Timestamptz(6)
+  user           user             @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  note_companies note_companies[]
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model inboxes {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String   @default(dbgenerated("auth.uid()")) @db.Uuid
+  raw_text   String?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  user       user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model note_cases {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  note_id    String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  case_id    String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cases      cases    @relation(fields: [case_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  notes      notes    @relation(fields: [note_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model note_companies {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  note_id    String    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_id String    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  companies  companies @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  notes      notes     @relation(fields: [note_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model notes {
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String           @default(dbgenerated("auth.uid()")) @db.Uuid
+  title          String
+  content        String?
+  type           String           @default("general")
+  created_at     DateTime         @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime         @default(now()) @db.Timestamptz(6)
+  note_cases     note_cases[]
+  note_companies note_companies[]
+  user           user             @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 
   @@schema("public")
 }
@@ -556,4 +682,20 @@ enum one_time_token_type {
   phone_change_token
 
   @@schema("auth")
+}
+
+enum memo_type {
+  whelk
+  unqualified
+  hash
+
+  @@schema("public")
+}
+
+enum company_type {
+  specialist // 전문
+  general // 종합
+  communication // 전소통
+
+  @@schema("public")
 }
