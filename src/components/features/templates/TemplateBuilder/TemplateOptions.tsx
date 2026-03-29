@@ -71,13 +71,24 @@ export function TemplateOptions({ template, setTemplate }: Props) {
       <OptionGroup label="공사구분">
         <Button
           variant={template.type === "전문" ? "default" : "outline"}
-          onClick={() => setTemplate((prev) => ({ ...prev, type: "전문" }))}
+          onClick={() =>
+            setTemplate((prev) => ({
+              ...prev,
+              type: prev.type === "전문" ? undefined : "전문",
+            }))
+          }
         >
           전문
         </Button>
+
         <Button
           variant={template.type === "종합" ? "default" : "outline"}
-          onClick={() => setTemplate((prev) => ({ ...prev, type: "종합" }))}
+          onClick={() =>
+            setTemplate((prev) => ({
+              ...prev,
+              type: prev.type === "종합" ? undefined : "종합",
+            }))
+          }
         >
           종합
         </Button>
