@@ -14,11 +14,11 @@ export default function useConvertInbox() {
         method: "PATCH",
         body: JSON.stringify({ title, content }),
       }),
-    onSuccess: (note, variables) => {
-      queryClient.invalidateQueries({ queryKey: inboxKeys.lists() });
+    onSuccess: (_note, variables) => {
+      queryClient.invalidateQueries({ queryKey: inboxKeys.lists(), refetchType: "all" });
       queryClient.invalidateQueries({ queryKey: inboxKeys.detail(variables.inboxId) });
-      queryClient.invalidateQueries({ queryKey: noteKeys.lists() });
-      router.replace(`/notes/${note.id}`);
+      queryClient.invalidateQueries({ queryKey: noteKeys.lists(), refetchType: "all" });
+      router.replace("/notes");
     },
   });
 }
