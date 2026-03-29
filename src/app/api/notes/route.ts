@@ -17,7 +17,7 @@ export async function GET(
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page") ?? 1);
   const pageSize = Number(searchParams.get("pageSize") ?? 10);
-  const keyword = searchParams.get("keyword") ?? "";
+  const keyword = searchParams.get("keyword")?.trim() ?? "";
   const type = searchParams.get("type") ?? "";
 
   const skip = (page - 1) * pageSize;
@@ -25,7 +25,7 @@ export async function GET(
   const where = {
     user_id: user.user_id,
     ...(type ? { type } : {}),
-    ...(keyword
+    ...(keyword.length > 0
       ? {
           OR: [
             { title: { contains: keyword, mode: "insensitive" as const } },

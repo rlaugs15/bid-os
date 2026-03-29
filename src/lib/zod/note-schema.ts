@@ -14,3 +14,8 @@ export const noteSchema = z.object({
   content: z.string().optional(),
   type: z.enum(["general", "case", "company"]),
 });
+
+export const noteSearchSchema = z.object({
+  keyword: z.string().trim().optional(),
+  type: z.enum(["general", "case", "company"]).optional(),
+});

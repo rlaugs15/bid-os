@@ -1,6 +1,7 @@
 "use client";
 
 import useTabQuery from "@/hooks/useTabQuery";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const tabMap = {
   전체: "all",
@@ -11,10 +12,29 @@ const tabMap = {
 
 export default function NoteTabs({ onChangeType }: { onChangeType?: (type: string) => void }) {
   const { tabs, currentTab, setCurrentTab } = useTabQuery(tabMap);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const handleChange = (value: string) => {
     setCurrentTab(value);
     onChangeType?.(value);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    // type 처리
+    if (value === "all") {
+      params.delete("type");
+    } else {
+      params.set("type", value);
+    }
+
+    // keyword 제거
+    params.delete("keyword");
+
+    // 페이지 초기화
+    params.set("page", "1");
+
+    router.push(`/notes?${params.toString()}`);
   };
   return (
     <section className="flex gap-2 border-b my-4">
