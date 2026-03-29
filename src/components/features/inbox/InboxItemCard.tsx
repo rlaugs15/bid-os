@@ -27,7 +27,7 @@ export default function InboxItemCard({ id, raw_text, created_at }: InboxItemCar
       <CardFooter>
         <div className="flex gap-2">
           <Link href={`/inbox/${id}`}>
-            <Button>메모로 변환</Button>
+            <Button>노트로 변환</Button>
           </Link>
           <Button onClick={handleDeleteInbox} disabled={isDeleting}>
             {isDeleting ? "삭제중..." : "삭제"}

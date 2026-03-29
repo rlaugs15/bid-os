@@ -6,41 +6,44 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import useCreateNote from "@/hooks/mutations/notes/useCreateNote";
 import { noteSchema } from "@/lib/zod/note-schema";
+import { NoteItem } from "@/types/notes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 
-export default function NotesForm() {
-  const { mutate: createNote, isPending: isCreatingNote } = useCreateNote();
+interface Props {
+  note: NoteItem;
+}
 
+export default function NoteDetailForm({ note }: Props) {
   const form = useForm<z.infer<typeof noteSchema>>({
     resolver: zodResolver(noteSchema),
     defaultValues: {
-      title: "",
-      content: "",
-      type: "general",
+      title: note?.title || "",
+      content: note?.content || "",
+      type: note?.type || "general",
     },
   });
 
   useEffect(() => {
-    form.reset({
-      title: "",
-      content: "",
-      type: "general",
-    });
-  }, [form]);
+    if (note) {
+      form.reset({
+        title: note.title ?? "",
+        content: note.content ?? "",
+        type: note.type ?? "general",
+      });
+    }
+  }, [note, form]);
 
-  const handleCreateNote = (data: z.infer<typeof noteSchema>) => {
-    if (isCreatingNote) return;
-    createNote(data);
+  const onSubmit = (data: z.infer<typeof noteSchema>) => {
+    console.log(data);
   };
-  const currentType = form.watch("type");
 
+  const currentType = form.watch("type");
   return (
-    <form onSubmit={form.handleSubmit(handleCreateNote)} className="space-y-6">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       <FieldGroup>
         <Controller
           name="title"
@@ -70,7 +73,7 @@ export default function NotesForm() {
         />
       </FieldGroup>
 
-      {/* 🔥 타입 선택 */}
+      {/* 타입 선택 */}
       <section className="space-y-2">
         <FieldLabel className="font-bold">타입</FieldLabel>
         <div className="flex gap-4">
@@ -100,12 +103,24 @@ export default function NotesForm() {
         </div>
       </section>
 
+      <section className="flex flex-col text-light-500 text-text-md">
+        <span>
+          작성일 :{" "}
+          {note?.created_at ? new Date(note.created_at).toLocaleString() : "날짜 정보 없음"}
+        </span>
+        <span>
+          {" "}
+          수정일 :{" "}
+          {note?.updated_at ? new Date(note.updated_at).toLocaleString() : "날짜 정보 없음"}
+        </span>
+      </section>
+
       {/* 제출 */}
       <div>
         <Separator />
       </div>
       <div className="mt-6">
-        <ActionButton label={isCreatingNote ? "노트 생성 중..." : "노트 생성하기"} />
+        <ActionButton label="노트 저장하기" />
       </div>
     </form>
   );
