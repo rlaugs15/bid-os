@@ -6,6 +6,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import useUpdateNote from "@/hooks/mutations/notes/useUpdateNote";
 import { noteSchema } from "@/lib/zod/note-schema";
 import { NoteItem } from "@/types/notes";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,9 +16,11 @@ import z from "zod";
 
 interface Props {
   note: NoteItem;
+  noteId: string;
 }
 
-export default function NoteDetailForm({ note }: Props) {
+export default function NoteDetailForm({ noteId, note }: Props) {
+  const { mutate: updateNote, isPending: isUpdatePending } = useUpdateNote(noteId);
   const form = useForm<z.infer<typeof noteSchema>>({
     resolver: zodResolver(noteSchema),
     defaultValues: {
@@ -38,7 +41,8 @@ export default function NoteDetailForm({ note }: Props) {
   }, [note, form]);
 
   const onSubmit = (data: z.infer<typeof noteSchema>) => {
-    console.log(data);
+    if (isUpdatePending) return;
+    updateNote(data);
   };
 
   const currentType = form.watch("type");
@@ -120,7 +124,7 @@ export default function NoteDetailForm({ note }: Props) {
         <Separator />
       </div>
       <div className="mt-6">
-        <ActionButton label="노트 저장하기" />
+        <ActionButton label={isUpdatePending ? "저장 중..." : "노트 저장하기"} />
       </div>
     </form>
   );

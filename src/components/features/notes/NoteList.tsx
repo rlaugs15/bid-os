@@ -12,6 +12,7 @@ import NotesItemCard from "./NoteItemCard";
 export default function NoteList() {
   const searchParams = useSearchParams();
   const rawType = searchParams.get("type");
+  const keyword = searchParams.get("keyword") ?? undefined;
 
   const type =
     rawType === "general" || rawType === "case" || rawType === "company" ? rawType : undefined;
@@ -22,6 +23,7 @@ export default function NoteList() {
     page: currentPage,
     pageSize: 12,
     type,
+    keyword,
   });
 
   const totalPages = Math.ceil((notesData?.totalCount ?? 0) / 12);

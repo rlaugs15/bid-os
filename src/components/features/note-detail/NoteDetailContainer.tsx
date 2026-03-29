@@ -19,7 +19,7 @@ export default function NoteDetailContainer() {
         <FallbackMessage message="노트가 존재하지 않습니다." />
       ) : (
         <>
-          <NoteDetailForm note={note} />
+          <NoteDetailForm noteId={String(noteId)} note={note} />
           <div>
             <Separator />
           </div>
