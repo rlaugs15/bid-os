@@ -13,6 +13,7 @@ export default function useCompanies(params: CompanyListParams) {
         pageSize: String(params.pageSize),
         ...(params.keyword ? { keyword: params.keyword } : {}),
         ...(params.status ? { status: params.status } : {}),
+        type: params.type,
       });
 
       return fetchJson<PaginationResponse<CompanyItem>>(

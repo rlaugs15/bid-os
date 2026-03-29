@@ -57,29 +57,29 @@ export type Database = {
       }
       companies: {
         Row: {
-          business_number: string | null
           created_at: string
           id: string
           name: string
           status: string
+          type: Database["public"]["Enums"]["company_type"]
           updated_at: string
           user_id: string
         }
         Insert: {
-          business_number?: string | null
           created_at?: string
           id?: string
           name: string
           status?: string
+          type: Database["public"]["Enums"]["company_type"]
           updated_at?: string
           user_id?: string
         }
         Update: {
-          business_number?: string | null
           created_at?: string
           id?: string
           name?: string
           status?: string
+          type?: Database["public"]["Enums"]["company_type"]
           updated_at?: string
           user_id?: string
         }
@@ -317,6 +317,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      company_type: "specialist" | "general" | "communication"
       memo_type: "whelk" | "unqualified" | "hash"
     }
     CompositeTypes: {
@@ -445,6 +446,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      company_type: ["specialist", "general", "communication"],
       memo_type: ["whelk", "unqualified", "hash"],
     },
   },

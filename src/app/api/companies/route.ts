@@ -75,8 +75,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<CompanyIt
     data: {
       user_id: user.user_id,
       name: body.name,
-      business_number: body.business_number ?? null,
       status: body.status ?? "active",
+      type: body.type,
     },
   });
 

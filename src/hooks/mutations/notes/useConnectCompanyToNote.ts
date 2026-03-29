@@ -31,8 +31,8 @@ export default function useConnectCompanyToNote() {
           created_at: new Date().toISOString(),
           user_id: previous.user_id,
           name: "연결 중...",
-          business_number: null,
           status: "active",
+          type: "specialist",
           updated_at: new Date().toISOString(),
         };
 

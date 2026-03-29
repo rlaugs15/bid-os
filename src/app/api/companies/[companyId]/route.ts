@@ -68,8 +68,8 @@ export async function PATCH(
     },
     data: {
       ...(body.name !== undefined ? { name: body.name } : {}),
-      ...(body.business_number !== undefined ? { business_number: body.business_number } : {}),
       ...(body.status !== undefined ? { status: body.status } : {}),
+      ...(body.type !== undefined ? { type: body.type } : {}),
       updated_at: new Date(),
     },
   });

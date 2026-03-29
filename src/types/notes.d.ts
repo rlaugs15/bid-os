@@ -6,6 +6,9 @@ export type CaseStatus = "active" | "closed"; // 공고 진행중 / 종료
 
 export type CompanyStatus = "active" | "inactive"; // 업체 활동중 / 활동중지
 
+export type CompanyType = "specialist" | "general" | "communication";
+// 전문 / 종합 / 전소통
+
 // ===== Relations =====
 
 export interface NoteCaseRelation {
@@ -65,8 +68,8 @@ export interface CompanyItem {
   created_at: string;
   user_id: string;
   name: string;
-  business_number: string | null;
   status: CompanyStatus;
+  type: CompanyType;
   updated_at: string;
   note_companies?: NoteCompanyRelation[];
 }
@@ -99,6 +102,7 @@ export interface CompanyListParams {
   pageSize: number;
   keyword?: string;
   status?: CompanyStatus;
+  type: CompanyType;
 }
 
 export interface InboxListParams {
@@ -142,14 +146,14 @@ export interface UpdateCaseRequest {
 
 export interface CreateCompanyRequest {
   name: string;
-  business_number?: string | null;
   status?: CompanyStatus;
+  type: CompanyType;
 }
 
 export interface UpdateCompanyRequest {
   name?: string;
-  business_number?: string | null;
   status?: CompanyStatus;
+  type: CompanyType;
 }
 
 export interface CreateInboxRequest {
