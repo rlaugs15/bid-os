@@ -2,13 +2,13 @@
 
 import { getUser } from "@/services/user/user.api";
 import { PaginationResponse } from "@/types/common";
-import type { CaseItem, CreateCaseRequest } from "@/types/notes";
+import type { CaseItem, CaseListItem, CreateCaseRequest } from "@/types/notes";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "prisma/prisma";
 
 export async function GET(
   request: NextRequest,
-): Promise<NextResponse<PaginationResponse<CaseItem> | string>> {
+): Promise<NextResponse<PaginationResponse<CaseListItem> | string>> {
   const user = await getUser();
   if (!user) {
     return NextResponse.json("Unauthorized", { status: 401 });
@@ -39,7 +39,15 @@ export async function GET(
     prisma.cases.findMany({
       where,
       include: {
-        note_cases: true,
+        note_cases: {
+          include: {
+            notes: {
+              include: {
+                note_companies: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
         updated_at: "desc",
@@ -49,8 +57,26 @@ export async function GET(
     }),
   ]);
 
+  const result = cases.map((c) => {
+    const noteCount = c.note_cases.length;
+
+    const companySet = new Set<string>();
+
+    c.note_cases.forEach((nc) => {
+      nc.notes.note_companies.forEach((ncp) => {
+        companySet.add(ncp.company_id);
+      });
+    });
+
+    return {
+      ...c,
+      noteCount,
+      companyCount: companySet.size,
+    };
+  });
+
   return NextResponse.json({
-    data: cases as unknown as CaseItem[],
+    data: result as unknown as CaseListItem[],
     page,
     pageSize,
     totalCount,

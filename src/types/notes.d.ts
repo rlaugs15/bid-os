@@ -63,6 +63,19 @@ export interface CaseItem {
   note_cases?: NoteCaseRelation[];
 }
 
+export interface CaseListItem {
+  id: string;
+  created_at: string;
+  user_id: string;
+  bid_number: string;
+  title: string;
+  status: CaseStatus;
+  opened_at: string | null;
+  updated_at: string;
+  noteCount: number;
+  companyCount: number;
+}
+
 export interface CompanyItem {
   id: string;
   created_at: string;

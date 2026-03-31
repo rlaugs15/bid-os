@@ -1,7 +1,7 @@
 import { fetchJson } from "@/lib/utils";
 import { caseKeys } from "@/services/cache/notes.chache";
 import { PaginationResponse } from "@/types/common";
-import { CaseItem, CaseListParams } from "@/types/notes";
+import { CaseListItem, CaseListParams } from "@/types/notes";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useCases(params: CaseListParams) {
@@ -15,7 +15,7 @@ export default function useCases(params: CaseListParams) {
         ...(params.status ? { status: params.status } : {}),
       });
 
-      return fetchJson<PaginationResponse<CaseItem>>(`/api/cases?${searchParams.toString()}`);
+      return fetchJson<PaginationResponse<CaseListItem>>(`/api/cases?${searchParams.toString()}`);
     },
   });
 }

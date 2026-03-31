@@ -2,6 +2,9 @@
 
 import FallbackMessage from "@/components/common/FallbackMessage";
 import LoadingLottie from "@/components/common/LoadingLottie";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import useNote from "@/hooks/queries/notes/useNote";
 import { useParams } from "next/navigation";
@@ -23,7 +26,7 @@ export default function NoteDetailContainer() {
           <div>
             <Separator />
           </div>
-          {/* <div className="flex gap-2">
+          <div className="flex gap-2">
             <section className="flex-1">
               <h2 className="text-md font-bold mb-2">📦연결된 공고</h2>
               <Card>
@@ -70,7 +73,7 @@ export default function NoteDetailContainer() {
                 </CardFooter>
               </Card>
             </section>
-          </div> */}
+          </div>
         </>
       )}
     </>
