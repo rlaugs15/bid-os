@@ -36,7 +36,7 @@ const data = {
         },
         {
           title: "공고",
-          url: "#",
+          url: "/cases",
         },
         {
           title: "업체",

@@ -32,6 +32,7 @@ export default function NotesSearchForm() {
     if (data.type) params.set("type", data.type);
 
     router.push(`/notes?${params.toString()}`);
+    form.reset({ keyword: "" });
   };
 
   return (

@@ -19,3 +19,9 @@ export const noteSearchSchema = z.object({
   keyword: z.string().trim().optional(),
   type: z.enum(["general", "case", "company"]).optional(),
 });
+
+export const caseSchema = z.object({
+  bid_number: z.string().min(1, "최소 1 글자는 입력해야 합니다."),
+  title: z.string().min(1, "최소 1 글자는 입력해야 합니다."),
+  status: z.enum(["active", "closed"]).optional(),
+});

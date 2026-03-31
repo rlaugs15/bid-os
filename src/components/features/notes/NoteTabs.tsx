@@ -10,14 +10,13 @@ const tabMap = {
   업체관련: "company",
 } as const;
 
-export default function NoteTabs({ onChangeType }: { onChangeType?: (type: string) => void }) {
+export default function NoteTabs() {
   const { tabs, currentTab, setCurrentTab } = useTabQuery(tabMap);
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const handleChange = (value: string) => {
     setCurrentTab(value);
-    onChangeType?.(value);
 
     const params = new URLSearchParams(searchParams.toString());
 
