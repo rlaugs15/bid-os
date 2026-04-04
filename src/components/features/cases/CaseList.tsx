@@ -3,13 +3,11 @@
 import CustomPagination from "@/components/common/CustomPagination";
 import FallbackMessage from "@/components/common/FallbackMessage";
 import LoadingLottie from "@/components/common/LoadingLottie";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useCases from "@/hooks/queries/cases/useCases";
 import useQueryPagination from "@/hooks/useQueryPagination";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRef } from "react";
+import CaseItemCard from "./CaseItemCard";
 
 export default function CaseList() {
   const searchParams = useSearchParams();
@@ -39,47 +37,7 @@ export default function CaseList() {
   return (
     <section className="space-y-4">
       {casesData?.data.map((item) => (
-        <Card key={item.id}>
-          <CardHeader>
-            <p className="text-text-sm font-semibold">{item.bid_number}</p>
-            <CardTitle className="text-md">{item.title}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-text-md font-sans">
-            {/* 메타 정보 */}
-            <dl className="space-y-2">
-              {/* 타입 */}
-              <div className="flex items-center gap-2">
-                <dt>상태 : </dt>
-                <dd>
-                  <span>
-                    {item.status === "active"
-                      ? "진행중"
-                      : item.status === "closed"
-                        ? "종료"
-                        : "알 수 없음"}
-                  </span>
-                </dd>
-              </div>
-
-              {/* 연결 정보 */}
-              <div className="flex items-center gap-2">
-                <span>연결된 노트 {item.noteCount}개</span>
-                <p> / </p>
-                <span>연결된 업체 {item.companyCount}개</span>
-              </div>
-            </dl>
-
-            {/* 액션 */}
-            <div className="flex justify-between w-full">
-              <Link href={`/cases/${item.id}`}>
-                <Button size="sm" variant="outline">
-                  상세 보기
-                </Button>
-              </Link>
-              <Button variant="destructive">삭제</Button>
-            </div>
-          </CardContent>
-        </Card>
+        <CaseItemCard key={item.id} CaseData={item} />
       ))}
 
       <CustomPagination

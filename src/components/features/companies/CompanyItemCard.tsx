@@ -63,7 +63,7 @@ export default function CompanyItemCard({ id, name, status, noteCount, caseCount
             </Button>
           </Link>
           <Button type="button" onClick={handleDeleteCompany} variant="destructive">
-            삭제
+            {isDeleting ? "삭제 중..." : "삭제"}
           </Button>
         </div>
       </CardContent>
