@@ -5,13 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 const tabMap = {
   전체: "all",
-  미분류: "general",
-  공고관련: "case",
-  업체관련: "company",
+  "서비스 중": "active",
+  "서비스 종료": "inactive",
 } as const;
-
-export default function NoteTabs() {
-  const { tabs, currentTab, setCurrentTab } = useTabQuery(tabMap, "type");
+export default function CompaniesTabs() {
+  const { tabs, currentTab, setCurrentTab } = useTabQuery(tabMap, "status");
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -20,11 +18,11 @@ export default function NoteTabs() {
 
     const params = new URLSearchParams(searchParams.toString());
 
-    // type 처리
+    // status 처리
     if (value === "all") {
-      params.delete("type");
+      params.delete("status");
     } else {
-      params.set("type", value);
+      params.set("status", value);
     }
 
     // keyword 제거
@@ -33,7 +31,7 @@ export default function NoteTabs() {
     // 페이지 초기화
     params.set("page", "1");
 
-    router.push(`/notes?${params.toString()}`);
+    router.push(`/companies?${params.toString()}`);
   };
   return (
     <section className="flex gap-2 border-b my-4">
