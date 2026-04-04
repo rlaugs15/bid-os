@@ -40,7 +40,7 @@ const data = {
         },
         {
           title: "업체",
-          url: "#",
+          url: "/companies",
         },
       ],
     },

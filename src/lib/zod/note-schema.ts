@@ -25,3 +25,9 @@ export const caseSchema = z.object({
   title: z.string().min(1, "최소 1 글자는 입력해야 합니다."),
   status: z.enum(["active", "closed"]).optional(),
 });
+
+export const companySchema = z.object({
+  name: z.string().min(1, "최소 1 글자는 입력해야 합니다."),
+  status: z.enum(["active", "inactive"]),
+  type: z.enum(["specialist", "general", "communication"]),
+});

@@ -10,7 +10,7 @@ const tabMap = {
 } as const;
 
 export default function CasesTabs() {
-  const { tabs, currentTab, setCurrentTab } = useTabQuery(tabMap);
+  const { tabs, currentTab, setCurrentTab } = useTabQuery(tabMap, "status");
   const searchParams = useSearchParams();
   const router = useRouter();
 
