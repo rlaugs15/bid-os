@@ -1,7 +1,7 @@
 import { fetchJson } from "@/lib/utils";
 import { companyKeys } from "@/services/cache/notes.chache";
 import { PaginationResponse } from "@/types/common";
-import { CompanyItem, CompanyListParams } from "@/types/notes";
+import { CompanyListItem, CompanyListParams } from "@/types/notes";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useCompanies(params: CompanyListParams) {
@@ -13,10 +13,9 @@ export default function useCompanies(params: CompanyListParams) {
         pageSize: String(params.pageSize),
         ...(params.keyword ? { keyword: params.keyword } : {}),
         ...(params.status ? { status: params.status } : {}),
-        type: params.type,
       });
 
-      return fetchJson<PaginationResponse<CompanyItem>>(
+      return fetchJson<PaginationResponse<CompanyListItem>>(
         `/api/companies?${searchParams.toString()}`,
       );
     },

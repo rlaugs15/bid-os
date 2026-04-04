@@ -87,6 +87,17 @@ export interface CompanyItem {
   note_companies?: NoteCompanyRelation[];
 }
 
+export interface CompanyListItem {
+  id: string;
+  created_at: string;
+  user_id: string;
+  name: string;
+  status: CompanyStatus;
+  updated_at: string;
+  noteCount: number;
+  caseCount: number;
+}
+
 export interface InboxItem {
   id: string;
   user_id: string;
@@ -115,7 +126,6 @@ export interface CompanyListParams {
   pageSize: number;
   keyword?: string;
   status?: CompanyStatus;
-  type: CompanyType;
 }
 
 export interface InboxListParams {

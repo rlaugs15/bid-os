@@ -2,13 +2,13 @@
 
 import { getUser } from "@/services/user/user.api";
 import { PaginationResponse } from "@/types/common";
-import { CompanyItem, CreateCompanyRequest } from "@/types/notes";
+import { CompanyItem, CompanyListItem, CreateCompanyRequest } from "@/types/notes";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "prisma/prisma";
 
 export async function GET(
   request: NextRequest,
-): Promise<NextResponse<PaginationResponse<CompanyItem> | string>> {
+): Promise<NextResponse<PaginationResponse<CompanyListItem> | string>> {
   const user = await getUser();
   if (!user) {
     return NextResponse.json("Unauthorized", { status: 401 });
@@ -44,7 +44,24 @@ export async function GET(
     prisma.companies.findMany({
       where,
       include: {
-        note_companies: true,
+        _count: {
+          select: {
+            note_companies: true, // 노트 수
+          },
+        },
+        note_companies: {
+          include: {
+            notes: {
+              include: {
+                note_cases: {
+                  select: {
+                    case_id: true, // 공고 ID만 가져오기
+                  },
+                },
+              },
+            },
+          },
+        },
       },
       orderBy: {
         updated_at: "desc",
@@ -54,8 +71,24 @@ export async function GET(
     }),
   ]);
 
+  const data = companies.map((company) => {
+    const noteCount = company._count.note_companies;
+
+    const caseIds = company.note_companies.flatMap(
+      (nc) => nc.notes?.note_cases.map((c) => c.case_id) ?? [],
+    );
+
+    const caseCount = new Set(caseIds).size; // 중복 제거
+
+    return {
+      ...company,
+      noteCount,
+      caseCount,
+    };
+  });
+
   return NextResponse.json({
-    data: companies as unknown as CompanyItem[],
+    data: data as unknown as CompanyListItem[],
     page,
     pageSize,
     totalCount,
