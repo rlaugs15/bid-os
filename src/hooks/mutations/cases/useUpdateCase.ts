@@ -14,7 +14,7 @@ export default function useUpdateCase(caseId: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: caseKeys.detail(caseId) });
-      queryClient.invalidateQueries({ queryKey: caseKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: caseKeys.lists(), refetchType: "all" });
     },
   });
 }

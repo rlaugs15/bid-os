@@ -15,7 +15,7 @@ export default function useCreateCase() {
         body: JSON.stringify(body),
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: caseKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: caseKeys.lists(), refetchType: "all" });
       router.push("/cases");
     },
   });
