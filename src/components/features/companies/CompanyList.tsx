@@ -24,7 +24,6 @@ export default function CompanyList() {
     keyword,
     status,
   });
-  console.log(companiesData);
 
   const totalPages = Math.ceil((companiesData?.totalCount ?? 0) / 12);
 

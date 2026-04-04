@@ -57,7 +57,7 @@ export default function CompanyItemCard({ id, name, status, noteCount, caseCount
 
         {/* 액션 */}
         <div className="flex justify-between w-full">
-          <Link href={`/cases/${id}`}>
+          <Link href={`/companies/${id}`}>
             <Button size="sm" variant="outline">
               상세 보기
             </Button>
