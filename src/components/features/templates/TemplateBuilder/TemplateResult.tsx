@@ -13,6 +13,9 @@ export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
   const copyPossibility = () => {
     navigator.clipboard.writeText("가능");
   };
+  const beforeWork = () => {
+    navigator.clipboard.writeText("퇴근전");
+  };
   return (
     <section className="flex space-x-20">
       <div className="space-y-1">
@@ -32,6 +35,9 @@ export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
           onClick={copyPossibility}
         >
           가능
+        </Button>
+        <Button variant="default" size="sm" className="w-30 ml-5 bg-blue-800" onClick={beforeWork}>
+          퇴근전
         </Button>
       </div>
 

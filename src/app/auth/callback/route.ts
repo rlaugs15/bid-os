@@ -6,7 +6,7 @@ import { upsertGoogleUser } from "./auth";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code"); // Supabase가 넘긴 인증 코드
-  const next = searchParams.get("next") ?? "/"; // 로그인 후 이동할 경로
+  const next = searchParams.get("next") ?? "/templates"; // 로그인 후 이동할 경로
 
   if (code) {
     const supabase = await createClient();

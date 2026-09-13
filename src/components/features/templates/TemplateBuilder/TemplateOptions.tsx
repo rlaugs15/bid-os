@@ -35,7 +35,17 @@ export function TemplateOptions({ template, setTemplate }: Props) {
       </OptionGroup>
 
       <OptionGroup label="적격심사">
-        {["수의", "지자체", "조달청", "국방부", "한전", "한토공", "수자원"].map((v) => (
+        {[
+          "수의",
+          "지자체",
+          "조달청",
+          "조달청(실적x)",
+          "국방부",
+          "한전",
+          "한토공",
+          "수자원",
+          "적격(실적x)",
+        ].map((v) => (
           <Button
             key={v}
             variant={template.evaluation === v ? "default" : "outline"}
@@ -54,9 +64,17 @@ export function TemplateOptions({ template, setTemplate }: Props) {
           placeholder="기타 적격심사"
           className="w-40 text-text-lg!"
           value={
-            ["수의", "지자체", "조달청", "국방부", "한전", "한토공", "수자원"].includes(
-              template.evaluation ?? "",
-            )
+            [
+              "수의",
+              "지자체",
+              "조달청",
+              "조달청(실적x)",
+              "국방부",
+              "한전",
+              "한토공",
+              "수자원",
+              "적격(실적x)",
+            ].includes(template.evaluation ?? "")
               ? ""
               : (template.evaluation ?? "")
           }
