@@ -16,8 +16,11 @@ export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
   const beforeWork = () => {
     navigator.clipboard.writeText("퇴근전");
   };
+  const specialNewcomerAward = () => {
+    navigator.clipboard.writeText("특신");
+  };
   return (
-    <section className="flex space-x-20">
+    <section className="flex space-x-15">
       <div className="space-y-1">
         <Textarea
           className="w-100 border rounded-md p-2 text-sm resize-none text-text-xl!"
@@ -28,16 +31,27 @@ export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
         <Button variant={copied ? "outline" : "default"} size="sm" className="w-30" onClick={copy}>
           {copied ? "복사됨" : "복사"}
         </Button>
+
+        <Button variant="default" size="sm" className="w-24 ml-5 bg-blue-800" onClick={beforeWork}>
+          퇴근전
+        </Button>
+
         <Button
           variant="default"
           size="sm"
-          className="w-30 ml-5 bg-blue-800"
+          className="w-24 ml-5 bg-blue-800"
+          onClick={specialNewcomerAward}
+        >
+          특신
+        </Button>
+
+        <Button
+          variant="default"
+          size="sm"
+          className="w-24 ml-5 bg-blue-800"
           onClick={copyPossibility}
         >
           가능
-        </Button>
-        <Button variant="default" size="sm" className="w-30 ml-5 bg-blue-800" onClick={beforeWork}>
-          퇴근전
         </Button>
       </div>
 
