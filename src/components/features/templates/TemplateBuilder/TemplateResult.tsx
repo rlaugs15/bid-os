@@ -13,8 +13,8 @@ export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
   const copyPossibility = () => {
     navigator.clipboard.writeText("가능");
   };
-  const beforeWork = () => {
-    navigator.clipboard.writeText("퇴근전");
+  const ownedBusiness = () => {
+    navigator.clipboard.writeText("여성");
   };
   const specialNewcomerAward = () => {
     navigator.clipboard.writeText("특신");
@@ -32,8 +32,13 @@ export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
           {copied ? "복사됨" : "복사"}
         </Button>
 
-        <Button variant="default" size="sm" className="w-24 ml-5 bg-blue-800" onClick={beforeWork}>
-          퇴근전
+        <Button
+          variant="default"
+          size="sm"
+          className="w-24 ml-5 bg-blue-800"
+          onClick={ownedBusiness}
+        >
+          여성
         </Button>
 
         <Button
@@ -57,7 +62,7 @@ export function TemplateResult({ result, memo, setMemo, copy, copied }: Props) {
 
       <Textarea
         className="w-120 border rounded-md p-2 text-sm resize-none text-text-xl!"
-        placeholder="이 칸은 잡다한 메모장입니다. 복사 후 사라집니다."
+        placeholder="이 칸은 잡다한 메모장입니다. 복사버튼 클릭 후 사라집니다."
         rows={2}
         value={memo}
         onChange={(e) => setMemo(e.target.value)}

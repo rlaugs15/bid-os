@@ -44,6 +44,7 @@ export function TemplateOptions({ template, setTemplate }: Props) {
           "한전",
           "한토공",
           "수자원",
+          "적격",
           "적격(실적x)",
         ].map((v) => (
           <Button
@@ -73,6 +74,7 @@ export function TemplateOptions({ template, setTemplate }: Props) {
               "한전",
               "한토공",
               "수자원",
+              "적격",
               "적격(실적x)",
             ].includes(template.evaluation ?? "")
               ? ""
